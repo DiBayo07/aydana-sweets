@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Айдана Sweets — Шоколадный мир</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+
+<div id="modal-overlay" class="modal-overlay" onclick="closeAllModals()"></div>
+<header class="header" id="header">
+  <div class="header-inner">
+    <button class="burger" id="burger" onclick="toggleMobileMenu()" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="logo" onclick="showPage('home')">
+      <span class="logo-icon"></span>
+      <span class="logo-text">Айдана<em>Sweets</em></span>
+    </div>
+
+    <nav class="nav" id="nav">
+      <a class="nav-link" onclick="showPage('home')">Главная</a>
+      <a class="nav-link" onclick="showPage('history')">История шоколада</a>
+      <a class="nav-link" onclick="showPage('catalog')">Каталог</a>
+      <a class="nav-link" onclick="showPage('contacts')">Контакты</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleSearch()" title="Поиск">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="icon-btn" onclick="openAuthModal()" title="Личный кабинет">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+      <button class="icon-btn cart-btn" onclick="showModal('cart-modal')" title="Корзина">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+    </div>
+  </div>
+
+ 
+  <div class="search-bar" id="search-bar">
+    <div class="search-inner">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-input" placeholder="Поиск шоколада, брендов, вкусов..." oninput="handleSearch(this.value)">
+      <button onclick="toggleSearch()">✕</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</header>
+
+
+<main id="main">
+
+ 
+  <div id="page-home" class="page active">
+
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-particles" id="particles"></div>
+      <div class="hero-content">
+        <div class="hero-badge"> Шоколад со всего мира</div>
+        <h1 class="hero-title">Мир вкуса<br><em>в каждой плитке</em></h1>
+        <p class="hero-subtitle"></p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showPage('catalog')">Смотреть каталог</button>
+          
+        </div>
+      
+      </div>
+    </section>
+
+  
+    <section class="stats-bar">
+      <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Брендов</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">300+</span><span class="stat-label">Продуктов</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">15</span><span class="stat-label">Стран</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">24ч</span><span class="stat-label">Доставка</span></div>
+    </section>
+
+    <section class="section">
+    </section>
+
+   
+    <section class="section section-dark">
+      <div class="container">
+        <div class="banners-grid">
+          <div class="banner banner-big">
+            <div class="banner-content">
+              <span class="banner-tag">Новинка</span>
+              <h3>Бельгийский<br>шоколад Leonidas</h3>
+              <p>Ручная работа, натуральные ингредиенты</p>
+              <button class="btn-primary" onclick="showCountryBrands('belgium')">Смотреть бренд</button>
+            </div>
+            <div class="banner-deco">🍫</div>
+          </div>
+          <div class="banner banner-sm banner-caramel">
+            <span class="banner-tag">Акция</span>
+            <h3>Скидка 20%<br>на Milka</h3>
+            <button class="btn-outline-light" onclick="filterByBrand('milka')">Купить</button>
+          </div>
+          <div class="banner banner-sm banner-green">
+            <span class="banner-tag">Эксклюзив</span>
+            <h3>Швейцарский<br>Lindt</h3>
+            <button class="btn-outline-light" onclick="filterByBrand('lindt')">Смотреть</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Хиты продаж</h2>
+          <a class="see-all" onclick="showPage('catalog')">Весь каталог →</a>
+        </div>
+        <div class="products-grid" id="featured-products"></div>
+      </div>
+    </section>
+
+ 
+   <section class="section section-cream">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">История шоколада 🍫</h2>
+      <p class="section-sub">Путешествие сквозь века</p>
+    </div>
+    <div class="history-timeline" id="history-timeline"></div>
+  </div>
+</section>
+
+    <section class="section">
+      <div class="container">
+        <div class="why-grid">
+          <div class="why-item">
+            <div class="why-icon"></div>
+            <h4>Быстрая доставка</h4>
+            <p>Доставим в течение 24 часов по городу</p>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"></div>
+            <h4>Гарантия качества</h4>
+            <p>Только оригинальные продукты от проверенных поставщиков</p>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"></div>
+            <h4>Правильное хранение</h4>
+            <p>Температурный режим соблюдён на всех этапах</p>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"></div>
+            <h4>Подарочная упаковка</h4>
+            <p>Красиво упакуем и добавим открытку</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  
+    <div class="container">
+
+      <div id="page-history" class="page">
+  <div class="page-hero">
+    <div class="container">
+      <h1 class="page-title">История шоколада</h1>
+      <p class="page-sub">От древних цивилизаций до наших дней</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="history-full" id="history-full-content"></div>
+  </div>
+</div>
+
+  <div id="page-catalog" class="page">
+    <div class="page-hero">
+      <div class="container">
+        <h1 class="page-title">Каталог</h1>
+        <p class="page-sub">Более 300 шоколадных удовольствий</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="catalog-layout">
+        
+        <aside class="filters-sidebar" id="filters-sidebar">
+          <div class="filters-header">
+            <h3>Фильтры</h3>
+            <button onclick="clearFilters()">Сбросить</button>
+          </div>
+
+          <div class="filter-group">
+            <h4>Тип шоколада</h4>
+            <label><input type="checkbox" name="type" value="dark" onchange="applyFilters()"> Тёмный</label>
+            <label><input type="checkbox" name="type" value="milk" onchange="applyFilters()"> Молочный</label>
+            <label><input type="checkbox" name="type" value="white" onchange="applyFilters()"> Белый</label>
+            <label><input type="checkbox" name="type" value="ruby" onchange="applyFilters()"> Рубиновый</label>
+          </div>
+
+          <div class="filter-group">
+            <h4>Категория</h4>
+            <label><input type="checkbox" name="cat" value="bar" onchange="applyFilters()"> Плитки</label>
+            <label><input type="checkbox" name="cat" value="bar2" onchange="applyFilters()"> Батончики</label>
+            <label><input type="checkbox" name="cat" value="sets" onchange="applyFilters()"> Паста</label>
+            <label><input type="checkbox" name="cat" value="candy" onchange="applyFilters()"> Конфеты</label>
+          </div>
+
+          <div class="filter-group">
+            <h4>Вкус</h4>
+            <label><input type="checkbox" name="flavor" value="hazelnut" onchange="applyFilters()"> Фундук</label>
+            <label><input type="checkbox" name="flavor" value="caramel" onchange="applyFilters()"> Карамель</label>
+            <label><input type="checkbox" name="flavor" value="mint" onchange="applyFilters()"> Мята</label>
+            <label><input type="checkbox" name="flavor" value="berry" onchange="applyFilters()"> Ягоды</label>
+            <label><input type="checkbox" name="flavor" value="orange" onchange="applyFilters()"> Апельсин</label>
+            <label><input type="checkbox" name="flavor" value="classic" onchange="applyFilters()"> Классический</label>
+          </div>
+
+          <div class="filter-group">
+            <h4>Бренд</h4>
+            <div class="brand-filter-list" id="brand-filter-list"></div>
+          </div>
+
+          <div class="filter-group">
+            <h4>Цена (сом)</h4>
+            <div class="price-range">
+              <input type="range" id="price-max" min="100" max="5000" value="5000" oninput="updatePriceFilter(this.value)">
+              <div class="price-labels">
+                <span>0 сом</span>
+                <span id="price-max-label">5 000 сом</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+  
+        <div class="catalog-main">
+          <div class="catalog-toolbar">
+            <div class="catalog-info">
+              <span id="catalog-count">0 товаров</span>
+            </div>
+            <div class="catalog-sort">
+              <select onchange="applySort(this.value)">
+                <option value="default">По умолчанию</option>
+                <option value="price-asc">Цена: возрастание</option>
+                <option value="price-desc">Цена: убывание</option>
+                <option value="name">По названию</option>
+                <option value="cacao">По % какао</option>
+              </select>
+            </div>
+            <button class="filter-toggle-btn" onclick="toggleFilters()"> Фильтры</button>
+          </div>
+          <div class="products-grid" id="catalog-products"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-contacts" class="page">
+    <div class="page-hero">
+      <div class="container">
+        <h1 class="page-title">Контакты</h1>
+        <p class="page-sub">Мы всегда рады помочь вам</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="contacts-grid">
+        <div class="contacts-info">
+          <div class="contact-item">
+            <div class="contact-icon"></div>
+            <div>
+              <h4>Адрес</h4>
+              <p>Кыргызстан</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"></div>
+            <div>
+              <h4>Телефон</h4>
+              <p>+996906990</p>
+              <p>+996906990</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"></div>
+            <div>
+              <h4>Email</h4>
+              <p>hello@aydana-sweets.kg</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"></div>
+            <div>
+              <h4>Часы работы</h4>
+              <p>24/7</p>
+            </div>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-link">Instagram</a>
+            <a href="#" class="social-link">WhatsApp</a>
+            <a href="#" class="social-link">Telegram</a>
+          </div>
+        </div>
+
+        <div class="contact-form-wrap">
+          <h3>Напишите нам</h3>
+          <div class="form-group">
+            <label>Имя</label>
+            <input type="text" id="contact-name" placeholder="Ваше имя">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="contact-email" placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label>Сообщение</label>
+            <textarea id="contact-message" placeholder="Ваш вопрос или пожелание..." rows="5"></textarea>
+          </div>
+          <button class="btn-primary btn-full" onclick="sendContactMessage()">Отправить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo footer-logo"> Айдана<em>Sweets</em></div>
+        <p class="footer-desc">Шоколадный магазин с лучшими мировыми брендами.</p>
+      </div>
+      <div>
+        <h5>Магазин</h5>
+        <a onclick="showPage('catalog')">Каталог</a>
+        <a onclick="showPage('countries')">По странам</a>
+        <a onclick="showPage('contacts')">Контакты</a>
+      </div>
+      <div>
+        <h5>Покупателям</h5>
+        <a href="#">Доставка и оплата</a>
+        <a href="#">Возврат</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div>
+        <h5>Связь</h5>
+        <p>+996906990</p>
+        <p>hello@aydana-sweets.kg</p>
+        <div class="footer-socials">
+          <a href="#">Inst</a>
+          <a href="#">TG</a>
+          <a href="#">WA</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Айдана Sweets. Все права защищены.</p>
+    </div>
+  </div>
+</footer>
+
+
+
+<div id="auth-modal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('auth-modal')">✕</button>
+
+    <div id="auth-login" class="auth-form">
+      <h3>Вход в админ-панель</h3>
+      <div class="form-group">
+        <label>Логин</label>
+        <input type="text" id="admin-login-username" placeholder="Логин">
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" id="admin-login-pass" placeholder="Пароль">
+      </div>
+      <button class="btn-primary btn-full" onclick="doAdminLogin()">Войти</button>
+      <div style="margin-top: 15px; font-size: 0.85rem; text-align: center; color: var(--text-light);">
+        🔐 Тестовые данные: <strong>admin</strong> / <strong>admin123</strong>
+      </div>
+    </div>
+
+    <div id="auth-profile" class="auth-form hidden">
+      <div class="profile-header">
+        <div class="profile-avatar">🛡️</div>
+        <div>
+          <div class="profile-name">Администратор</div>
+          <div class="profile-email">admin@aydana-sweets.kg</div>
+        </div>
+      </div>
+      <div style="margin: 20px 0; text-align: center;">
+        <p style="font-size: 0.9rem; color: var(--text-mid);">Вы авторизованы как администратор.</p>
+      </div>
+      <button class="btn-primary btn-full" onclick="showPage('admin'); closeModal('auth-modal');" style="margin-bottom: 10px;">Панель управления</button>
+      <button class="btn-outline btn-full" onclick="doAdminLogout()">Выйти</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="cart-modal" class="modal">
+  <div class="modal-box modal-cart">
+    <button class="modal-close" onclick="closeModal('cart-modal')">✕</button>
+    <h3>🛒 Корзина</h3>
+    <div id="cart-items"></div>
+    <div id="cart-empty" class="cart-empty">
+      <div class="cart-empty-icon"></div>
+      <p>Корзина пуста<br>Добавьте что-нибудь вкусное!</p>
+      <button class="btn-primary" onclick="closeModal('cart-modal'); showPage('catalog')">В каталог</button>
+    </div>
+    <div id="cart-footer" class="cart-footer hidden">
+      <div class="cart-total">
+        <span>Итого:</span>
+        <span id="cart-total-price">0 сом</span>
+      </div>
+      <button class="btn-primary btn-full" onclick="showModal('checkout-modal'); closeModal('cart-modal')">Оформить заказ</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="checkout-modal" class="modal">
+  <div class="modal-box modal-checkout">
+    <button class="modal-close" onclick="closeModal('checkout-modal')">✕</button>
+    <h3>Оформление заказа</h3>
+    <div class="checkout-steps">
+      <div class="checkout-step active" id="step-1">
+        <h4>1. Контактные данные</h4>
+        <div class="form-group">
+          <label>Имя</label>
+          <input type="text" id="order-name" placeholder="Ваше имя">
+        </div>
+        <div class="form-group">
+          <label>Телефон</label>
+          <input type="tel" id="order-phone" placeholder="+996 (___) ___-__-__">
+        </div>
+        <div class="form-group">
+          <label>Адрес доставки</label>
+          <input type="text" id="order-address" placeholder="Улица, дом, квартира">
+        </div>
+        <h4>2. Способ оплаты</h4>
+        <div class="payment-options">
+          <label class="payment-opt"><input type="radio" name="payment" value="card" checked> Карта онлайн</label>
+          <label class="payment-opt"><input type="radio" name="payment" value="cash"> Наличными курьеру</label>
+        </div>
+        <div class="checkout-order-summary" id="checkout-summary"></div>
+        <button class="btn-primary btn-full" onclick="placeOrder()">Подтвердить заказ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="product-modal" class="modal">
+  <div class="modal-box modal-product">
+    <button class="modal-close" onclick="closeModal('product-modal')">✕</button>
+    <div id="product-modal-content"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

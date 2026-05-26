@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход | Айдана Sweets Админ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-login-page">
+  <div class="admin-login-card">
+    <h1>🍫 Айдана <em>Sweets</em></h1>
+    <p>Админ-панель</p>
+    <form id="loginForm">
+      <div class="admin-form-group">
+        <label>Логин</label>
+        <input type="text" id="username" class="admin-form-control" placeholder="admin" required>
+      </div>
+      <div class="admin-form-group">
+        <label>Пароль</label>
+        <input type="password" id="password" class="admin-form-control" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Войти</button>
+    </form>
+    <p class="admin-login-hint">Тест: <strong>admin</strong> / <strong>admin123</strong></p>
+    <a href="../index.html" class="admin-back-link">← На сайт</a>
+  </div>
+  <script>
+    if (sessionStorage.getItem('admin_logged_in') === '1') {
+      window.location.href = 'products.html';
+    }
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value;
+      if (u === 'admin' && p === 'admin123') {
+        sessionStorage.setItem('admin_logged_in', '1');
+        window.location.href = 'products.html';
+      } else {
+        alert('Неверный логин или пароль');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "milka",
+    "name": "Milka",
+    "country": "germany",
+    "countryName": "Германия",
+    "logo": "🐄",
+    "founded": 1901,
+    "description": "Знаменитый альпийский молочный шоколад"
+  },
+  {
+    "id": "lindt",
+    "name": "Lindt",
+    "country": "switzerland",
+    "countryName": "Швейцария",
+    "logo": "🍫",
+    "founded": 1845,
+    "description": "Премиальный швейцарский шоколад"
+  },
+  {
+    "id": "nutella",
+    "name": "Nutella",
+    "country": "italy",
+    "countryName": "Италия",
+    "logo": "🍫",
+    "founded": 1964,
+    "description": "Всемирно известная шоколадная паста"
+  }
+]
