@@ -34,6 +34,7 @@
                     <div class="spinner"></div>
                     <p>Загрузка сообщений...</p>
                 </div>
+                <div id="errorMsg" style="display:none; background:#f8d7da; color:#721c24; padding:15px; border-radius:8px; margin:20px;"></div>
                 <table class="admin-table" id="messagesTable" style="display:none;">
                     <thead>
                         <tr>
@@ -54,8 +55,8 @@
         .spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid var(--admin-border);
-            border-top-color: var(--admin-primary);
+            border: 3px solid #F0E6CC;
+            border-top-color: #C4873A;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 15px;
@@ -68,36 +69,53 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../js/config.js"></script>
     <script>
+        // Проверка авторизации
         if (!sessionStorage.getItem('admin_logged_in')) {
             window.location.href = 'login.html';
         }
 
-        const supabase = window.supabase.createClient(
-            window.SUPABASE_URL,
-            window.SUPABASE_ANON_KEY
-        );
+        // Создаём клиент Supabase
+        let supabase;
+        try {
+            supabase = window.supabase.createClient(
+                window.SUPABASE_URL,
+                window.SUPABASE_ANON_KEY
+            );
+            console.log('Supabase клиент создан');
+        } catch (err) {
+            console.error('Ошибка создания клиента:', err);
+        }
 
         async function loadMessages() {
             const loading = document.getElementById('loading');
             const table = document.getElementById('messagesTable');
             const tbody = document.getElementById('messagesBody');
+            const errorDiv = document.getElementById('errorMsg');
             
             try {
+                if (!supabase) {
+                    throw new Error('Supabase не инициализирован');
+                }
+                
+                console.log('Загружаем сообщения...');
+                
                 const { data, error } = await supabase
                     .from('messages')
                     .select('*')
                     .order('created_at', { ascending: false });
-
+                
+                console.log('Ответ Supabase:', { data, error });
+                
                 if (error) throw error;
-
+                
                 loading.style.display = 'none';
                 table.style.display = 'table';
-
+                
                 if (!data || data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">📭 Нет сообщений от клиентов</td></tr>';
                     return;
                 }
-
+                
                 tbody.innerHTML = data.map(msg => `
                     <tr>
                         <td style="white-space:nowrap;">${new Date(msg.created_at).toLocaleString()}</td>
@@ -109,12 +127,19 @@
                         </td>
                     </tr>
                 `).join('');
+                
             } catch (err) {
-                console.error(err);
-                loading.innerHTML = '<p style="color:red;">❌ Ошибка загрузки сообщений. Проверьте таблицу messages в Supabase.</p>';
+                console.error('Ошибка загрузки:', err);
+                loading.style.display = 'none';
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = `<strong>❌ Ошибка загрузки сообщений:</strong> ${err.message}<br><br>
+                    🔧 Решение:<br>
+                    1. Выполните SQL в Supabase SQL Editor (создать таблицу messages)<br>
+                    2. Проверьте, что таблица messages существует в Supabase Table Editor<br>
+                    3. Проверьте RLS политики: ALTER TABLE messages DISABLE ROW LEVEL SECURITY;`;
             }
         }
-
+        
         function escapeHtml(str) {
             if (!str) return '';
             return str
@@ -123,24 +148,25 @@
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;');
         }
-
+        
         async function deleteMessage(id) {
             if (!confirm('Удалить это сообщение?')) return;
             try {
                 const { error } = await supabase.from('messages').delete().eq('id', id);
                 if (error) throw error;
-                loadMessages();
+                loadMessages(); // Перезагружаем список
             } catch (err) {
                 alert('Ошибка удаления: ' + err.message);
             }
         }
-
+        
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
             e.preventDefault();
             sessionStorage.removeItem('admin_logged_in');
             window.location.href = 'login.html';
         });
-
+        
+        // Загружаем сообщения
         loadMessages();
     </script>
 </body>
