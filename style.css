@@ -317,3 +317,309 @@ img { max-width: 100%; }
         font-size: 1.2rem;
     }
 }
+/* ===== ПОЛНАЯ МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ ===== */
+
+@media (max-width: 768px) {
+    /* ОБЩИЕ НАСТРОЙКИ */
+    body {
+        overflow-x: hidden !important;
+    }
+    
+    .container {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    
+    /* ШАПКА */
+    .header-inner {
+        padding: 0 12px !important;
+        gap: 8px !important;
+    }
+    
+    .logo-text {
+        font-size: 0.9rem !important;
+    }
+    
+    /* ГЛАВНЫЙ ЭКРАН */
+    .hero {
+        padding: 30px 15px !important;
+        min-height: auto !important;
+    }
+    
+    .hero-content {
+        gap: 20px !important;
+    }
+    
+    .hero-title {
+        font-size: 1.3rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .hero-badge {
+        font-size: 0.7rem !important;
+    }
+    
+    /* ТОВАРЫ - 2 В РЯД */
+    .products-grid {
+        gap: 12px !important;
+    }
+    
+    .product-card {
+        margin: 0 !important;
+    }
+    
+    .product-img {
+        height: 120px !important;
+    }
+    
+    .product-img img {
+        width: 80% !important;
+        height: 80% !important;
+    }
+    
+    .product-body {
+        padding: 10px !important;
+    }
+    
+    .product-brand {
+        font-size: 0.6rem !important;
+    }
+    
+    .product-name {
+        font-size: 0.75rem !important;
+        margin-bottom: 4px !important;
+    }
+    
+    .product-desc {
+        display: none !important;
+    }
+    
+    .product-price {
+        font-size: 0.85rem !important;
+    }
+    
+    .product-actions .btn-primary {
+        padding: 5px 8px !important;
+        font-size: 0.65rem !important;
+    }
+    
+    /* СЕКЦИИ */
+    .section {
+        padding: 40px 0 !important;
+    }
+    
+    .section-title {
+        font-size: 1.3rem !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .section-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    /* КАТАЛОГ */
+    .catalog-layout {
+        padding: 20px 0 !important;
+    }
+    
+    .catalog-toolbar {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+    
+    .catalog-info {
+        font-size: 0.75rem !important;
+    }
+    
+    .catalog-sort select {
+        padding: 5px 8px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .filter-toggle-btn {
+        padding: 5px 12px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    /* БАННЕРЫ */
+    .banners-grid {
+        gap: 12px !important;
+    }
+    
+    .banner {
+        padding: 20px !important;
+        min-height: auto !important;
+    }
+    
+    .banner h3 {
+        font-size: 1rem !important;
+    }
+    
+    .banner p {
+        font-size: 0.75rem !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .banner .btn-primary,
+    .banner .btn-outline-light {
+        padding: 6px 12px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .banner-deco {
+        font-size: 2.5rem !important;
+        top: 10px !important;
+        right: 15px !important;
+    }
+    
+    /* ПРЕИМУЩЕСТВА */
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+    
+    .why-icon {
+        font-size: 1.8rem !important;
+    }
+    
+    .why-item h4 {
+        font-size: 0.8rem !important;
+    }
+    
+    .why-item p {
+        font-size: 0.7rem !important;
+    }
+    
+    /* СТАТИСТИКА */
+    .stats-bar {
+        padding: 15px !important;
+        gap: 10px !important;
+    }
+    
+    .stat {
+        padding: 0 !important;
+        min-width: 70px !important;
+    }
+    
+    .stat-num {
+        font-size: 1.2rem !important;
+    }
+    
+    .stat-label {
+        font-size: 0.6rem !important;
+    }
+    
+    /* КОНТАКТЫ */
+    .contacts-grid {
+        padding: 30px 0 !important;
+    }
+    
+    .contact-form-wrap {
+        padding: 20px !important;
+    }
+    
+    .contact-form-wrap h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .contact-item h4 {
+        font-size: 0.9rem !important;
+    }
+    
+    .contact-item p {
+        font-size: 0.8rem !important;
+    }
+    
+    /* ФУТЕР */
+    .footer {
+        padding: 40px 15px 0 !important;
+    }
+    
+    .footer-grid {
+        gap: 20px !important;
+    }
+    
+    .footer h5 {
+        font-size: 0.7rem !important;
+    }
+    
+    .footer a, .footer p {
+        font-size: 0.7rem !important;
+    }
+    
+    /* ИСТОРИЯ */
+    .timeline-wrapper {
+        padding-left: 15px !important;
+    }
+    
+    .timeline-wrapper::before {
+        left: 5px !important;
+    }
+    
+    .timeline-item {
+        padding: 10px 12px !important;
+    }
+    
+    .timeline-year {
+        font-size: 0.8rem !important;
+    }
+    
+    .timeline-icon {
+        font-size: 1.2rem !important;
+    }
+    
+    .timeline-content h3 {
+        font-size: 0.85rem !important;
+    }
+    
+    .timeline-content p {
+        font-size: 0.7rem !important;
+    }
+    
+    .funfacts-grid {
+        gap: 10px !important;
+    }
+    
+    .funfact-card {
+        padding: 10px 12px !important;
+        font-size: 0.75rem !important;
+    }
+}
+
+/* ОЧЕНЬ МАЛЕНЬКИЕ ТЕЛЕФОНЫ (до 480px) */
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .why-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .logo-text {
+        display: none !important;
+    }
+    
+    .logo-icon {
+        font-size: 1.2rem !important;
+    }
+    
+    .hero-title {
+        font-size: 1.1rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.1rem !important;
+    }
+    
+    .stat-num {
+        font-size: 1rem !important;
+    }
+    
+    .stat-label {
+        font-size: 0.55rem !important;
+    }
+}
