@@ -675,3 +675,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
+function toggleMobileMenu() {
+    const nav = document.getElementById('nav');
+    if (nav) nav.classList.toggle('open');
+}
