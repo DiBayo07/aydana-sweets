@@ -1,4 +1,4 @@
-unction getSupabase() {
+Function getSupabase() {
   if (!window._supabaseClient) {
     window._supabaseClient = window.supabase.createClient(
       window.SUPABASE_URL,
