@@ -124,3 +124,12 @@ window.fetchMessages = async function fetchMessages() {
   if (error) throw new Error(formatSupabaseError(error));
   return data || [];
 };
+
+window.saveMessage = async function saveMessage(payload) {
+    const { error } = await getSupabase().from('messages').insert({
+        name: payload.name,
+        email: payload.email,
+        message: payload.message
+    });
+    if (error) throw new Error(formatSupabaseError(error));
+};
