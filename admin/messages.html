@@ -68,22 +68,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../js/config.js"></script>
+    <script src="../js/supabase-client.js"></script>
     <script>
         // Проверка авторизации
         if (!sessionStorage.getItem('admin_logged_in')) {
             window.location.href = 'login.html';
-        }
-
-        // Создаём клиент Supabase
-        let supabase;
-        try {
-            supabase = window.supabase.createClient(
-                window.SUPABASE_URL,
-                window.SUPABASE_ANON_KEY
-            );
-            console.log('Supabase клиент создан');
-        } catch (err) {
-            console.error('Ошибка создания клиента:', err);
         }
 
         async function loadMessages() {
@@ -93,30 +82,22 @@
             const errorDiv = document.getElementById('errorMsg');
             
             try {
-                if (!supabase) {
-                    throw new Error('Supabase не инициализирован');
-                }
+                console.log('Загружаем сообщения через fetchMessages...');
                 
-                console.log('Загружаем сообщения...');
+                // Используем функцию из supabase-client.js
+                const messages = await window.fetchMessages();
                 
-                const { data, error } = await supabase
-                    .from('messages')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                console.log('Ответ Supabase:', { data, error });
-                
-                if (error) throw error;
+                console.log('Получено сообщений:', messages.length);
                 
                 loading.style.display = 'none';
                 table.style.display = 'table';
                 
-                if (!data || data.length === 0) {
+                if (!messages || messages.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">📭 Нет сообщений от клиентов</td></tr>';
                     return;
                 }
                 
-                tbody.innerHTML = data.map(msg => `
+                tbody.innerHTML = messages.map(msg => `
                     <tr>
                         <td style="white-space:nowrap;">${new Date(msg.created_at).toLocaleString()}</td>
                         <td><strong>${escapeHtml(msg.name)}</strong></td>
@@ -136,7 +117,7 @@
                     🔧 Решение:<br>
                     1. Выполните SQL в Supabase SQL Editor (создать таблицу messages)<br>
                     2. Проверьте, что таблица messages существует в Supabase Table Editor<br>
-                    3. Проверьте RLS политики: ALTER TABLE messages DISABLE ROW LEVEL SECURITY;`;
+                    3. Проверьте RLS политики`;
             }
         }
         
@@ -152,6 +133,11 @@
         async function deleteMessage(id) {
             if (!confirm('Удалить это сообщение?')) return;
             try {
+                // Используем Supabase напрямую для удаления
+                const supabase = window.supabase.createClient(
+                    window.SUPABASE_URL,
+                    window.SUPABASE_ANON_KEY
+                );
                 const { error } = await supabase.from('messages').delete().eq('id', id);
                 if (error) throw error;
                 loadMessages(); // Перезагружаем список
