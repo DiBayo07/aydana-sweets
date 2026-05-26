@@ -2720,3 +2720,235 @@ img { max-width: 100%; }
     line-height: 1.7;
     max-width: 700px;
     margin: 0 auto 32px;
+
+/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
+
+/* Планшеты и маленькие ноутбуки */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 20px;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+/* Телефоны */
+@media (max-width: 768px) {
+    /* Шапка */
+    .header-inner {
+        padding: 0 15px;
+    }
+    
+    .logo-text {
+        font-size: 1.2rem;
+    }
+    
+    .logo-icon {
+        font-size: 1.3rem;
+    }
+    
+    /* Навигация */
+    .nav {
+        position: fixed;
+        top: 66px;
+        left: -100%;
+        width: 70%;
+        height: calc(100vh - 66px);
+        background: var(--cacao);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+    
+    .nav.open {
+        left: 0;
+    }
+    
+    .nav-link {
+        padding: 12px 0;
+        font-size: 1.1rem;
+    }
+    
+    /* Бургер-меню */
+    .burger {
+        display: flex;
+    }
+    
+    /* Герой-секция */
+    .hero {
+        min-height: 500px;
+        padding: 40px 20px;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .hero-btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .hero-btns .btn-primary,
+    .hero-btns .btn-outline {
+        width: 100%;
+        text-align: center;
+    }
+    
+    /* Статистика */
+    .stats-bar {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .stat {
+        flex: 1;
+        min-width: 100px;
+        padding: 0;
+    }
+    
+    .stat-divider {
+        display: none;
+    }
+    
+    /* Секции */
+    .section {
+        padding: 40px 0;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    /* Каталог */
+    .catalog-layout {
+        flex-direction: column;
+    }
+    
+    .filters-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 80%;
+        height: 100vh;
+        z-index: 1001;
+        overflow-y: auto;
+        transition: left 0.3s ease;
+        background: var(--white);
+    }
+    
+    .filters-sidebar.open {
+        left: 0;
+    }
+    
+    .filter-toggle-btn {
+        display: flex;
+        position: sticky;
+        top: 70px;
+        z-index: 100;
+    }
+    
+    /* Карточки товаров */
+    .product-img {
+        height: 150px;
+    }
+    
+    .product-name {
+        font-size: 0.85rem;
+    }
+    
+    .product-price {
+        font-size: 1rem;
+    }
+    
+    /* Модальные окна */
+    .modal-box {
+        width: 95%;
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .product-modal-layout {
+        flex-direction: column;
+    }
+    
+    .product-modal-img {
+        height: 200px;
+    }
+    
+    /* Контакты */
+    .contacts-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    /* Футер */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        text-align: center;
+    }
+    
+    .footer-socials {
+        justify-content: center;
+    }
+    
+    /* История */
+    .timeline-wrapper {
+        padding-left: 20px;
+    }
+    
+    .timeline-wrapper::before {
+        left: 8px;
+    }
+    
+    .timeline-item {
+        padding: 15px;
+    }
+    
+    .timeline-year {
+        font-size: 0.9rem;
+    }
+    
+    .funfacts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Маленькие телефоны */
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    .stat-num {
+        font-size: 1.5rem;
+    }
+    
+    .banners-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .why-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
