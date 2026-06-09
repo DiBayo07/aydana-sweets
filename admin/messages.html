@@ -1,278 +1,151 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Сообщения | Айдана Sweets Админ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="admin.css">
-  <style>
-    .search-container {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 10px;
-    }
-    .search-input {
-      flex: 1;
-      padding: 12px 16px;
-      border: 2px solid var(--admin-border);
-      border-radius: 12px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .search-input:focus {
-      border-color: var(--admin-primary);
-    }
-    .message-text-cell {
-      max-width: 400px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .message-text-cell.expanded {
-      white-space: normal;
-      word-break: break-word;
-    }
-    .loading-spinner {
-      text-align: center;
-      padding: 40px;
-    }
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid var(--admin-border);
-      border-top-color: var(--admin-primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 15px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сообщения | Айдана Sweets</title>
+    <link rel="stylesheet" href="admin.css">
+    <style>
+        .admin-body { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 260px; background: #2C1810; color: white; }
+        .admin-sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid #4a2e22; }
+        .admin-sidebar-menu a { display: block; padding: 12px 20px; color: #F5ECD7; text-decoration: none; }
+        .admin-sidebar-menu a:hover, .admin-sidebar-menu a.active { background: #C4873A; }
+        .admin-main { flex: 1; padding: 20px; background: #FAF6EE; }
+        .admin-header { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .admin-table-container { background: white; border-radius: 12px; padding: 20px; }
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th, .admin-table td { padding: 12px; text-align: left; border-bottom: 1px solid #F0E6CC; }
+        .admin-table th { background: #F5ECD7; }
+        .admin-btn-delete { background: #C0392B; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; }
+        .spinner { width: 40px; height: 40px; border: 3px solid #F0E6CC; border-top-color: #C4873A; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading { text-align: center; padding: 40px; }
+    </style>
 </head>
 <body>
-  <div class="admin-body">
-    <aside class="admin-sidebar">
-      <div class="admin-sidebar-header">
-        <h2><i class="fas fa-candy-cane"></i> Айдана Sweets</h2>
-        <p>Админ-панель</p>
-      </div>
-      <nav class="admin-sidebar-menu">
-        <a href="dashboard.html" class="admin-menu-item"><i class="fas fa-tachometer-alt"></i> Дашборд</a>
-        <a href="products.html" class="admin-menu-item"><i class="fas fa-chocolate-bar"></i> Товары</a>
-        <a href="messages.html" class="admin-menu-item active"><i class="fas fa-envelope"></i> Сообщения</a>
-        <a href="../index.html" class="admin-menu-item"><i class="fas fa-store"></i> На сайт</a>
-        <a href="#" class="admin-menu-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выход</a>
-      </nav>
-    </aside>
-
-    <main class="admin-main">
-      <header class="admin-header">
-        <h1><i class="fas fa-envelope"></i> Сообщения из контактов</h1>
-        <div class="admin-user">
-          <span>Администратор</span>
-          <div class="admin-avatar">
-            <i class="fas fa-user-shield"></i>
-          </div>
-        </div>
-      </header>
-
-      <div class="search-container">
-        <input type="text" id="searchInput" class="search-input" placeholder="Поиск сообщений по имени, email или тексту..." oninput="filterMessages()">
-      </div>
-
-      <div class="admin-table-container">
-        <div id="loading" class="loading-spinner">
-          <div class="spinner"></div>
-          <p>Загрузка сообщений...</p>
-        </div>
-        <table class="admin-table" id="messagesTable" style="display: none;">
-          <thead>
-            <tr>
-              <th style="width: 150px;">Дата</th>
-              <th style="width: 150px;">Имя</th>
-              <th style="width: 200px;">Email</th>
-              <th>Сообщение</th>
-              <th style="width: 120px;">Действия</th>
-            </tr>
-          </thead>
-          <tbody id="messagesTableBody">
-            <!-- Сюда динамически загружаются сообщения -->
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
-
-  <!-- Модалка деталей сообщения -->
-  <div class="admin-modal" id="messageModal">
-    <div class="admin-modal-content" style="max-width: 500px;">
-      <div class="admin-modal-header">
-        <h3><i class="fas fa-envelope-open"></i> Детали сообщения</h3>
-        <button class="admin-modal-close" onclick="closeModal()">&times;</button>
-      </div>
-      <div class="admin-modal-body" id="modalBody">
-        <!-- Сюда вставляется контент сообщения -->
-      </div>
-      <div class="admin-modal-footer">
-        <button class="btn btn-outline" onclick="closeModal()">Закрыть</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="../js/config.js"></script>
-  <script>
-    const supabase = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-
-    // Проверка авторизации
-    if (!sessionStorage.getItem('admin_logged_in')) {
-      window.location.href = 'login.html';
-    }
-
-    // Выход из системы
-    document.getElementById('logoutBtn').addEventListener('click', (e) => {
-      e.preventDefault();
-      sessionStorage.removeItem('admin_logged_in');
-      window.location.href = 'login.html';
-    });
-
-    let allMessages = [];
-
-    // Загрузка сообщений
-    async function loadMessages() {
-      const loading = document.getElementById('loading');
-      const table = document.getElementById('messagesTable');
-      const tbody = document.getElementById('messagesTableBody');
-      
-      try {
-        const { data, error } = await supabase
-          .from('messages')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        allMessages = data || [];
-        
-        loading.style.display = 'none';
-        table.style.display = 'table';
-        
-        renderMessages(allMessages);
-      } catch (err) {
-        console.error(err);
-        loading.innerHTML = '<p style="color: var(--admin-danger); font-weight: bold;">❌ Ошибка загрузки сообщений из Supabase</p>';
-      }
-    }
-
-    // Отрисовка списка сообщений
-    function renderMessages(list) {
-      const tbody = document.getElementById('messagesTableBody');
-      if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Сообщений не найдено</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = list.map(m => `
-        <tr>
-          <td>${new Date(m.created_at).toLocaleString()}</td>
-          <td><strong>${escapeHtml(m.name || '—')}</strong></td>
-          <td><a href="mailto:${escapeHtml(m.email)}" style="color: var(--admin-primary); text-decoration: none;">${escapeHtml(m.email || '—')}</a></td>
-          <td>
-            <div class="message-text-cell" title="Нажмите, чтобы прочитать полностью" onclick="viewMessageDetails(${m.id})" style="cursor: pointer;">
-              ${escapeHtml(m.message || '')}
+    <div class="admin-body">
+        <div class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <h2>🍫 Айдана Sweets</h2>
+                <p>Админ-панель</p>
             </div>
-          </td>
-          <td class="admin-actions">
-            <button class="admin-btn admin-btn-view" onclick="viewMessageDetails(${m.id})" title="Просмотреть"><i class="fas fa-eye"></i></button>
-            <button class="admin-btn admin-btn-delete" onclick="deleteMessage(${m.id})" title="Удалить"><i class="fas fa-trash"></i></button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    // Фильтрация сообщений по поисковому запросу
-    function filterMessages() {
-      const query = document.getElementById('searchInput').value.toLowerCase().trim();
-      if (!query) {
-        renderMessages(allMessages);
-        return;
-      }
-      const filtered = allMessages.filter(m => 
-        (m.name && m.name.toLowerCase().includes(query)) ||
-        (m.email && m.email.toLowerCase().includes(query)) ||
-        (m.message && m.message.toLowerCase().includes(query))
-      );
-      renderMessages(filtered);
-    }
-
-    // Детали сообщения в модалке
-    function viewMessageDetails(id) {
-      const msg = allMessages.find(m => m.id === id);
-      if (!msg) return;
-
-      document.getElementById('modalBody').innerHTML = `
-        <div style="background: #F5ECD7; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-          <p><strong>📅 Дата:</strong> ${new Date(msg.created_at).toLocaleString()}</p>
-          <p><strong>👤 Отправитель:</strong> ${escapeHtml(msg.name || '—')}</p>
-          <p><strong>📧 Email:</strong> <a href="mailto:${escapeHtml(msg.email)}">${escapeHtml(msg.email || '—')}</a></p>
+            <div class="admin-sidebar-menu">
+                <a href="dashboard.html">📊 Дашборд</a>
+                <a href="products.html">🍫 Товары</a>
+                <a href="orders.html">📦 Заказы</a>
+                <a href="messages.html" class="active">✉️ Сообщения</a>
+                <a href="#" id="logoutBtn">🚪 Выход</a>
+            </div>
         </div>
-        <h4>💬 Сообщение:</h4>
-        <div style="white-space: pre-wrap; word-break: break-word; background: #FFF; padding: 15px; border-radius: 12px; border: 1px solid var(--admin-border); margin-top: 10px; line-height: 1.6;">
-          ${escapeHtml(msg.message || '')}
+
+        <div class="admin-main">
+            <div class="admin-header">
+                <h1>✉️ Сообщения от клиентов</h1>
+            </div>
+
+            <div class="admin-table-container">
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Загрузка сообщений...</p>
+                </div>
+                <div id="errorMsg" style="display:none; background:#f8d7da; color:#721c24; padding:15px; border-radius:8px; margin-bottom:20px;"></div>
+                <table class="admin-table" id="messagesTable" style="display:none;">
+                    <thead>
+                        <tr><th>Дата</th><th>Имя</th><th>Email</th><th>Сообщение</th><th>Действия</th></tr>
+                    </thead>
+                    <tbody id="messagesBody"></tbody>
+                </table>
+            </div>
         </div>
-      `;
+    </div>
 
-      document.getElementById('messageModal').classList.add('active');
-    }
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script>
+        // Проверка авторизации
+        if (!sessionStorage.getItem('admin_logged_in')) {
+            window.location.href = 'login.html';
+        }
 
-    function closeModal() {
-      document.getElementById('messageModal').classList.remove('active');
-    }
+        const supabase = window.supabase.createClient(
+            window.SUPABASE_URL,
+            window.SUPABASE_ANON_KEY
+        );
 
-    // Удаление сообщения
-    async function deleteMessage(id) {
-      if (!confirm('Вы уверены, что хотите удалить это сообщение?')) return;
-      
-      try {
-        const { error } = await supabase
-          .from('messages')
-          .delete()
-          .eq('id', id);
-          
-        if (error) throw error;
+        async function loadMessages() {
+            const loading = document.getElementById('loading');
+            const table = document.getElementById('messagesTable');
+            const tbody = document.getElementById('messagesBody');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            try {
+                console.log('Загружаем сообщения...');
+                
+                const { data, error } = await supabase
+                    .from('messages')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                loading.style.display = 'none';
+                table.style.display = 'table';
+                errorMsg.style.display = 'none';
+                
+                console.log('Получено сообщений:', data?.length);
+                
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">📭 Нет сообщений от клиентов</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.map(msg => `
+                    <tr>
+                        <td style="white-space:nowrap;">${new Date(msg.created_at).toLocaleString()}</td>
+                        <td><strong>${escapeHtml(msg.name)}</strong></td>
+                        <td>${escapeHtml(msg.email)}</td>
+                        <td style="max-width:400px; word-break:break-word;">${escapeHtml(msg.message)}</td>
+                        <td><button class="admin-btn-delete" onclick="deleteMessage(${msg.id})">🗑️ Удалить</button></td>
+                    </tr>
+                `).join('');
+                
+            } catch (err) {
+                console.error('Ошибка:', err);
+                loading.style.display = 'none';
+                errorMsg.style.display = 'block';
+                errorMsg.innerHTML = '❌ Ошибка загрузки: ' + err.message;
+            }
+        }
         
-        allMessages = allMessages.filter(m => m.id !== id);
-        filterMessages();
-      } catch (err) {
-        console.error(err);
-        alert('Ошибка при удалении сообщения');
-      }
-    }
-
-    // Эскейп HTML
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-    }
-
-    // Закрытие модалки по клику вовне
-    window.onclick = function(e) {
-      const modal = document.getElementById('messageModal');
-      if (e.target === modal) {
-        closeModal();
-      }
-    }
-
-    // Запуск
-    loadMessages();
-  </script>
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        async function deleteMessage(id) {
+            if (!confirm('Удалить сообщение?')) return;
+            try {
+                const { error } = await supabase.from('messages').delete().eq('id', id);
+                if (error) throw error;
+                loadMessages();
+            } catch (err) {
+                alert('Ошибка: ' + err.message);
+            }
+        }
+        
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('admin_logged_in');
+            window.location.href = 'login.html';
+        });
+        
+        loadMessages();
+    </script>
 </body>
 </html>
