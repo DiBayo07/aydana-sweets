@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "name": "Молочный шоколад с орехами",
+    "brand": "milka",
+    "brandName": "Milka",
+    "type": "milk",
+    "cacao": 30,
+    "flavor": "hazelnut",
+    "category": "bar",
+    "price": 350,
+    "description": "Нежный молочный шоколад с цельным фундуком",
+    "emoji": "🌰",
+    "image": "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=200",
+    "tags": [
+      "хит"
+    ],
+    "country": "germany"
+  },
+  {
+    "id": 2,
+    "name": "Тёмный шоколад 72% какао",
+    "brand": "lindt",
+    "brandName": "Lindt",
+    "type": "dark",
+    "cacao": 72,
+    "flavor": "classic",
+    "category": "bar",
+    "price": 480,
+    "description": "Интенсивный тёмный шоколад с нотками красных фруктов",
+    "emoji": "🍫",
+    "image": "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=200",
+    "tags": [
+      "хит"
+    ],
+    "country": "switzerland"
+  },
+  {
+    "id": 3,
+    "name": "Белый шоколад с ягодами",
+    "brand": "milka",
+    "brandName": "Milka",
+    "type": "white",
+    "cacao": 0,
+    "flavor": "berry",
+    "category": "bar",
+    "price": 380,
+    "description": "Кремовый белый шоколад с кислинкой ягод",
+    "emoji": "🍓",
+    "image": "https://images.unsplash.com/photo-1581798459219-318e76aecc7b?w=200",
+    "tags": [],
+    "country": "germany"
+  },
+  {
+    "id": 4,
+    "name": "Шоколадная паста с фундуком",
+    "brand": "nutella",
+    "brandName": "Nutella",
+    "type": "hazelnut",
+    "cacao": 13,
+    "flavor": "hazelnut",
+    "category": "sets",
+    "price": 590,
+    "description": "Нежная паста с кусочками фундука",
+    "emoji": "🥜",
+    "image": "https://images.unsplash.com/photo-1541783245831-57f6fb74c9e6?w=200",
+    "tags": [],
+    "country": "italy"
+  }
+]

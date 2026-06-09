@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Тест Supabase</title>
+</head>
+<body>
+    <h1>🔍 Тест подключения к Supabase</h1>
+    <div id="result" style="font-family: monospace; white-space: pre-wrap;"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script>
+        (async function() {
+            const result = document.getElementById('result');
+            
+            // Проверка config
+            if (!window.SUPABASE_URL) {
+                result.innerHTML = '❌ Ошибка: SUPABASE_URL не определен в config.js';
+                return;
+            }
+            if (!window.SUPABASE_ANON_KEY || window.SUPABASE_ANON_KEY === 'sb_publishable_...') {
+                result.innerHTML = '❌ Ошибка: SUPABASE_ANON_KEY неправильный. Должен начинаться с eyJ...';
+                return;
+            }
+            
+            result.innerHTML = '✅ Config загружен\n';
+            result.innerHTML += `📡 URL: ${window.SUPABASE_URL}\n`;
+            result.innerHTML += `🔑 Ключ: ${window.SUPABASE_ANON_KEY.substring(0, 50)}...\n\n`;
+            
+            try {
+                const supabase = window.supabase.createClient(
+                    window.SUPABASE_URL,
+                    window.SUPABASE_ANON_KEY
+                );
+                
+                result.innerHTML += '🔄 Подключаюсь к Supabase...\n';
+                
+                // Пробуем получить товары
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*');
+                
+                if (error) {
+                    result.innerHTML += `❌ Ошибка Supabase:\n`;
+                    result.innerHTML += `   Код: ${error.code}\n`;
+                    result.innerHTML += `   Сообщение: ${error.message}\n`;
+                    
+                    if (error.code === '42P01') {
+                        result.innerHTML += `\n💡 Решение: Таблица 'products' не существует.\n`;
+                        result.innerHTML += `   Выполните SQL запрос в Supabase SQL Editor.\n`;
+                    } else if (error.code === '42501') {
+                        result.innerHTML += `\n💡 Решение: Ошибка прав доступа (RLS).\n`;
+                        result.innerHTML += `   Выполните: ALTER TABLE products ENABLE ROW LEVEL SECURITY;\n`;
+                        result.innerHTML += `   И создайте политики доступа.\n`;
+                    }
+                    return;
+                }
+                
+                result.innerHTML += `\n✅ УСПЕХ! Найдено товаров: ${data.length}\n`;
+                
+                if (data.length === 0) {
+                    result.innerHTML += `\n⚠️ Таблица пуста. Добавьте товары через админку или SQL.\n`;
+                } else {
+                    result.innerHTML += `\n📦 Список товаров:\n`;
+                    data.forEach(p => {
+                        result.innerHTML += `   - ${p.name} | ${p.price} сом\n`;
+                    });
+                }
+                
+                result.innerHTML += `\n🎉 Supabase работает корректно!`;
+                
+            } catch (err) {
+                result.innerHTML += `\n❌ Исключение: ${err.message}`;
+            }
+        })();
+    </script>
+</body>
+</html>
