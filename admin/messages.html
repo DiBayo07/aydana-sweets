@@ -1,111 +1,134 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Сообщения | Айдана Sweets</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; display: flex; }
-        .sidebar { width: 250px; background: #2C1810; color: white; min-height: 100vh; }
-        .sidebar a { display: block; padding: 12px 20px; color: #F5ECD7; text-decoration: none; }
-        .sidebar a.active { background: #C4873A; }
-        .content { flex: 1; padding: 20px; background: #FAF6EE; }
-        table { width: 100%; background: white; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #F5ECD7; }
-        button { background: #C0392B; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        .loading { text-align: center; padding: 40px; }
-        .error { background: #f8d7da; color: #721c24; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Сообщения | Айдана Sweets Админ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    <div class="sidebar">
-        <div style="padding: 20px; text-align: center; border-bottom: 1px solid #4a2e22;">
-            <h2>🍫 Айдана Sweets</h2>
-        </div>
-        <a href="dashboard.html">📊 Дашборд</a>
-        <a href="products.html">🍫 Товары</a>
-        <a href="orders.html">📦 Заказы</a>
-        <a href="messages.html" class="active">✉️ Сообщения</a>
-        <a href="#" id="logoutBtn">🚪 Выход</a>
-    </div>
+  <div class="admin-body">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <h2><i class="fas fa-candy-cane"></i> Айдана Sweets</h2>
+        <p>Админ-панель</p>
+      </div>
+      <nav class="admin-sidebar-menu">
+        <a href="dashboard.html" class="admin-menu-item"><i class="fas fa-tachometer-alt"></i> Дашборд</a>
+        <a href="products.html" class="admin-menu-item"><i class="fas fa-chocolate-bar"></i> Товары</a>
+        <a href="messages.html" class="admin-menu-item active"><i class="fas fa-envelope"></i> Сообщения</a>
+        <a href="../index.html" class="admin-menu-item"><i class="fas fa-store"></i> На сайт</a>
+        <a href="#" class="admin-menu-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выход</a>
+      </nav>
+    </aside>
 
-    <div class="content">
-        <h1>✉️ Сообщения от клиентов</h1>
-        <div id="result"></div>
-    </div>
+    <main class="admin-main">
+      <header class="admin-header">
+        <h1><i class="fas fa-envelope"></i> Сообщения от клиентов</h1>
+      </header>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../js/config.js"></script>
-    <script>
-        if (!sessionStorage.getItem('admin_logged_in')) {
-            window.location.href = 'login.html';
+      <div id="result"></div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="../js/config.js"></script>
+  <script>
+    if (sessionStorage.getItem('admin_logged_in') !== '1') {
+      window.location.href = 'login.html';
+    }
+
+    const supabase = window.supabase.createClient(
+      window.SUPABASE_URL,
+      window.SUPABASE_ANON_KEY
+    );
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>]/g, (m) => {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    async function load() {
+      const result = document.getElementById('result');
+      result.innerHTML = '<div class="admin-alert">⏳ Загрузка сообщений...</div>';
+
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          result.innerHTML = '<div class="admin-alert">📭 Пока нет сообщений от клиентов</div>';
+          return;
         }
 
-        const supabase = window.supabase.createClient(
-            window.SUPABASE_URL,
-            window.SUPABASE_ANON_KEY
-        );
+        let html = `
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Дата</th>
+                  <th>Имя</th>
+                  <th>Email</th>
+                  <th>Сообщение</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
 
-        async function load() {
-            const result = document.getElementById('result');
-            result.innerHTML = '<div class="loading">⏳ Загрузка...</div>';
-            
-            try {
-                const { data, error } = await supabase
-                    .from('messages')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                if (error) throw error;
-                
-                if (!data || data.length === 0) {
-                    result.innerHTML = '<div class="error">📭 Нет сообщений</div>';
-                    return;
-                }
-                
-                let html = '<table><thead><tr><th>Дата</th><th>Имя</th><th>Email</th><th>Сообщение</th><th></th></tr></thead><tbody>';
-                for (let msg of data) {
-                    html += `
-                        <tr>
-                            <td>${new Date(msg.created_at).toLocaleString()}</td>
-                            <td>${escapeHtml(msg.name)}</td>
-                            <td>${escapeHtml(msg.email)}</td>
-                            <td>${escapeHtml(msg.message)}</td>
-                            <td><button onclick="deleteMsg(${msg.id})">Удалить</button></td>
-                        </tr>
-                    `;
-                }
-                html += '</tbody></table>';
-                result.innerHTML = html;
-                
-            } catch (err) {
-                result.innerHTML = `<div class="error">❌ Ошибка: ${err.message}</div>`;
-                console.error(err);
-            }
+        for (const msg of data) {
+          html += `
+            <tr>
+              <td>${new Date(msg.created_at).toLocaleString('ru-RU')}</td>
+              <td>${escapeHtml(msg.name)}</td>
+              <td><a href="mailto:${escapeHtml(msg.email)}">${escapeHtml(msg.email)}</a></td>
+              <td>${escapeHtml(msg.message)}</td>
+              <td>
+                <button class="btn btn-danger" type="button" onclick="deleteMsg(${msg.id})">
+                  <i class="fas fa-trash"></i> Удалить
+                </button>
+              </td>
+            </tr>
+          `;
         }
-        
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
-        
-        window.deleteMsg = async function(id) {
-            if (!confirm('Удалить сообщение?')) return;
-            await supabase.from('messages').delete().eq('id', id);
-            load();
-        };
-        
-        document.getElementById('logoutBtn').onclick = () => {
-            sessionStorage.removeItem('admin_logged_in');
-            window.location.href = 'login.html';
-        };
-        
-        load();
-    </script>
+
+        html += '</tbody></table></div>';
+        result.innerHTML = html;
+      } catch (err) {
+        result.innerHTML = `<div class="admin-alert admin-alert-error">❌ Ошибка: ${escapeHtml(err.message)}</div>`;
+        console.error(err);
+      }
+    }
+
+    window.deleteMsg = async function deleteMsg(id) {
+      if (!confirm('Удалить это сообщение?')) return;
+
+      const { error } = await supabase.from('messages').delete().eq('id', id);
+      if (error) {
+        alert('Не удалось удалить: ' + error.message);
+        return;
+      }
+      load();
+    };
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      sessionStorage.removeItem('admin_logged_in');
+      window.location.href = 'login.html';
+    });
+
+    load();
+  </script>
 </body>
 </html>
