@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <script>window.location.replace('dashboard.html');</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Заказы | Айдана Sweets Админ</title>
@@ -12,12 +11,12 @@
 </head>
 <body>
   <div class="admin-body">
-    <div class="admin-sidebar">
+    <aside class="admin-sidebar">
       <div class="admin-sidebar-header">
         <h2><i class="fas fa-candy-cane"></i> Айдана Sweets</h2>
-        <p style="font-size: 0.7rem; opacity: 0.7; margin-top: 5px;">Админ-панель</p>
+        <p>Админ-панель</p>
       </div>
-      <div class="admin-sidebar-menu">
+      <nav class="admin-sidebar-menu">
         <a href="dashboard.html" class="admin-menu-item">
           <i class="fas fa-tachometer-alt"></i> Дашборд
         </a>
@@ -27,11 +26,17 @@
         <a href="orders.html" class="admin-menu-item active">
           <i class="fas fa-shopping-cart"></i> Заказы
         </a>
+        <a href="messages.html" class="admin-menu-item">
+          <i class="fas fa-envelope"></i> Сообщения
+        </a>
+        <a href="../index.html" class="admin-menu-item">
+          <i class="fas fa-store"></i> На сайт
+        </a>
         <a href="#" class="admin-menu-item" id="logoutBtn">
           <i class="fas fa-sign-out-alt"></i> Выход
         </a>
-      </div>
-    </div>
+      </nav>
+    </aside>
 
     <div class="admin-main">
       <div class="admin-header">
@@ -99,7 +104,7 @@
         tbody.innerHTML = orders.map(o => `
           <tr>
             <td><strong>#${o.id}</strong></td>
-            <td>${o.customer_name || '—'}</td>
+            <td>${o.customer || '—'}</td>
             <td>${o.phone || '—'}</td>
             <td>${o.total || 0} сом</td>
             <td>${o.created_at ? new Date(o.created_at).toLocaleString() : '—'}</td>

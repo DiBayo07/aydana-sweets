@@ -99,7 +99,8 @@ window.removeProduct = async function removeProduct(id) {
 
 window.saveOrder = async function saveOrder(order) {
     const { error } = await getSupabase().from('orders').insert({
-        customer_name: order.customer,
+        id: order.id || Math.floor(Math.random() * 1000000000),
+        customer: order.customer,
         phone: order.phone,
         address: order.address,
         payment: order.payment,

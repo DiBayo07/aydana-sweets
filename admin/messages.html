@@ -3,21 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сообщения | Айдана Sweets</title>
+    <title>Сообщения | Айдана Sweets Админ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="admin.css">
     <style>
-        .admin-body { display: flex; min-height: 100vh; }
-        .admin-sidebar { width: 260px; background: #2C1810; color: white; }
-        .admin-sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid #4a2e22; }
-        .admin-sidebar-menu a { display: block; padding: 12px 20px; color: #F5ECD7; text-decoration: none; }
-        .admin-sidebar-menu a:hover, .admin-sidebar-menu a.active { background: #C4873A; }
-        .admin-main { flex: 1; padding: 20px; background: #FAF6EE; }
-        .admin-header { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
-        .admin-table-container { background: white; border-radius: 12px; padding: 20px; }
-        .admin-table { width: 100%; border-collapse: collapse; }
-        .admin-table th, .admin-table td { padding: 12px; text-align: left; border-bottom: 1px solid #F0E6CC; }
-        .admin-table th { background: #F5ECD7; }
-        .admin-btn-delete { background: #C0392B; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; }
         .spinner { width: 40px; height: 40px; border: 3px solid #F0E6CC; border-top-color: #C4873A; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading { text-align: center; padding: 40px; }
@@ -25,23 +15,24 @@
 </head>
 <body>
     <div class="admin-body">
-        <div class="admin-sidebar">
+        <aside class="admin-sidebar">
             <div class="admin-sidebar-header">
-                <h2>🍫 Айдана Sweets</h2>
+                <h2><i class="fas fa-candy-cane"></i> Айдана Sweets</h2>
                 <p>Админ-панель</p>
             </div>
-            <div class="admin-sidebar-menu">
-                <a href="dashboard.html">📊 Дашборд</a>
-                <a href="products.html">🍫 Товары</a>
-                <a href="orders.html">📦 Заказы</a>
-                <a href="messages.html" class="active">✉️ Сообщения</a>
-                <a href="#" id="logoutBtn">🚪 Выход</a>
-            </div>
-        </div>
+            <nav class="admin-sidebar-menu">
+                <a href="dashboard.html" class="admin-menu-item"><i class="fas fa-tachometer-alt"></i> Дашборд</a>
+                <a href="products.html" class="admin-menu-item"><i class="fas fa-chocolate-bar"></i> Товары</a>
+                <a href="orders.html" class="admin-menu-item"><i class="fas fa-shopping-cart"></i> Заказы</a>
+                <a href="messages.html" class="admin-menu-item active"><i class="fas fa-envelope"></i> Сообщения</a>
+                <a href="../index.html" class="admin-menu-item"><i class="fas fa-store"></i> На сайт</a>
+                <a href="#" class="admin-menu-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выход</a>
+            </nav>
+        </aside>
 
         <div class="admin-main">
             <div class="admin-header">
-                <h1>✉️ Сообщения от клиентов</h1>
+                <h1><i class="fas fa-envelope"></i> Сообщения от клиентов</h1>
             </div>
 
             <div class="admin-table-container">
