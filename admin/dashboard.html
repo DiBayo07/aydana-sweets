@@ -64,6 +64,8 @@
 </head>
 <body>
   <div class="admin-body">
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+
     <aside class="admin-sidebar">
       <div class="admin-sidebar-header">
         <h2><i class="fas fa-candy-cane"></i> Айдана Sweets</h2>
@@ -81,7 +83,12 @@
 
     <main class="admin-main">
       <header class="admin-header">
-        <h1><i class="fas fa-tachometer-alt"></i> Панель управления</h1>
+        <div class="admin-header-left">
+          <button class="admin-menu-toggle" id="adminMenuToggle" type="button" aria-label="Открыть меню">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1><i class="fas fa-tachometer-alt"></i> Панель управления</h1>
+        </div>
         <div class="admin-user">
           <span>Администратор</span>
           <div class="admin-avatar">
@@ -103,6 +110,13 @@
             <p>Сообщений от клиентов</p>
           </div>
         </div>
+        <div class="stat-card">
+          <div class="stat-icon primary"><i class="fas fa-shopping-cart"></i></div>
+          <div class="stat-info">
+            <h3 id="statOrders">—</h3>
+            <p>Заказов</p>
+          </div>
+        </div>
       </div>
 
       <h2 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-top: 40px; color: var(--admin-secondary);">Быстрые действия</h2>
@@ -118,6 +132,11 @@
           <span>✉️ Просмотр сообщений</span>
           <p>Связь с покупателями и чтение входящих сообщений</p>
         </a>
+        <a href="orders.html" class="quick-action-card">
+          <i class="fas fa-shopping-cart"></i>
+          <span>🛒 Управление заказами</span>
+          <p>Просмотр и обработка заказов от клиентов</p>
+        </a>
         <a href="../index.html" class="quick-action-card">
           <i class="fas fa-store"></i>
           <span>🏪 На главную сайта</span>
@@ -128,43 +147,27 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="../js/config.js?v=2"></script>
+  <script src="../js/config.js?v=3"></script>
+  <script src="../js/supabase-client.js?v=3"></script>
+  <script src="admin-common.js?v=3"></script>
   <script>
-    const supabase = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-
-    // Проверка авторизации
-    if (!sessionStorage.getItem('admin_logged_in')) {
-      window.location.href = 'login.html';
-    }
-
-    // Выход из системы
-    document.getElementById('logoutBtn').addEventListener('click', (e) => {
-      e.preventDefault();
-      sessionStorage.removeItem('admin_logged_in');
-      window.location.href = 'login.html';
-    });
-
-    // Загрузка быстрой статистики без вечных крутилок
     async function loadStats() {
       try {
-        // Загружаем количество сообщений
-        supabase.from('messages').select('*', { count: 'exact', head: true })
-          .then(({ count, error }) => {
-            if (!error && count !== null) {
-              document.getElementById('statMessages').textContent = count;
-            } else {
-              document.getElementById('statMessages').textContent = '0';
-            }
-          }).catch(() => {
-            document.getElementById('statMessages').textContent = '0';
-          });
+        const [messagesResult, ordersResult] = await Promise.all([
+          window.fetchMessages().catch(() => []),
+          window.fetchOrders().catch(() => [])
+        ]);
 
+        document.getElementById('statMessages').textContent = messagesResult.length;
+        document.getElementById('statOrders').textContent = ordersResult.length;
       } catch (err) {
         console.error('Ошибка загрузки статистики:', err);
+        document.getElementById('statMessages').textContent = '0';
+        document.getElementById('statOrders').textContent = '0';
       }
     }
 
-    loadStats();
+    document.addEventListener('DOMContentLoaded', loadStats);
   </script>
 </body>
 </html>

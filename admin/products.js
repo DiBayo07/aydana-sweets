@@ -137,7 +137,7 @@ async function deleteProduct(id) {
   }
 }
 
-document.getElementById('logoutBtn').addEventListener('click', (e) => {
+document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
   e.preventDefault();
   sessionStorage.removeItem('admin_logged_in');
   window.location.href = 'login.html';

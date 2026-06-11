@@ -10,6 +10,8 @@
 </head>
 <body>
   <div class="admin-body">
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+
     <aside class="admin-sidebar">
       <div class="admin-sidebar-header">
         <h2><i class="fas fa-candy-cane"></i> Айдана Sweets</h2>
@@ -27,7 +29,12 @@
 
     <main class="admin-main">
       <header class="admin-header">
-        <h1><i class="fas fa-chocolate-bar"></i> Управление товарами</h1>
+        <div class="admin-header-left">
+          <button class="admin-menu-toggle" id="adminMenuToggle" type="button" aria-label="Открыть меню">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1><i class="fas fa-chocolate-bar"></i> Управление товарами</h1>
+        </div>
         <button class="btn btn-primary" type="button" onclick="showAddProductModal()">
           <i class="fas fa-plus"></i> Добавить товар
         </button>
@@ -123,8 +130,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="../js/config.js?v=2"></script>
-  <script src="../js/supabase-client.js?v=2"></script>
-  <script src="products.js?v=2"></script>
+  <script src="../js/config.js?v=3"></script>
+  <script src="../js/supabase-client.js?v=3"></script>
+  <script src="admin-common.js?v=3"></script>
+  <script src="products.js?v=3"></script>
 </body>
 </html>

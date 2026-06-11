@@ -99,15 +99,41 @@ window.removeProduct = async function removeProduct(id) {
 
 window.saveOrder = async function saveOrder(order) {
     const { error } = await getSupabase().from('orders').insert({
-        id: order.id || Math.floor(Math.random() * 1000000000),
-        customer: order.customer,
+        customer_name: order.customer_name || order.customer,
         phone: order.phone,
         address: order.address,
-        payment: order.payment,
-        items: order.items,
-        total: order.total,
+        payment: order.payment || 'cash',
+        items: order.items || [],
+        total: order.total || 0,
         status: 'new'
     });
+    if (error) throw new Error(formatSupabaseError(error));
+};
+
+window.fetchOrders = async function fetchOrders() {
+    const { data, error } = await getSupabase()
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false });
+    if (error) throw new Error(formatSupabaseError(error));
+    return data || [];
+};
+
+window.updateOrderStatus = async function updateOrderStatus(id, status) {
+    const { error } = await getSupabase()
+        .from('orders')
+        .update({ status })
+        .eq('id', id);
+    if (error) throw new Error(formatSupabaseError(error));
+};
+
+window.deleteOrder = async function deleteOrder(id) {
+    const { error } = await getSupabase().from('orders').delete().eq('id', id);
+    if (error) throw new Error(formatSupabaseError(error));
+};
+
+window.deleteMessage = async function deleteMessage(id) {
+    const { error } = await getSupabase().from('messages').delete().eq('id', id);
     if (error) throw new Error(formatSupabaseError(error));
 };
 

@@ -11,6 +11,8 @@
 </head>
 <body>
   <div class="admin-body">
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+
     <aside class="admin-sidebar">
       <div class="admin-sidebar-header">
         <h2><i class="fas fa-candy-cane"></i> Айдана Sweets</h2>
@@ -38,13 +40,18 @@
       </nav>
     </aside>
 
-    <div class="admin-main">
-      <div class="admin-header">
-        <h1><i class="fas fa-shopping-cart"></i> Заказы</h1>
-      </div>
+    <main class="admin-main">
+      <header class="admin-header">
+        <div class="admin-header-left">
+          <button class="admin-menu-toggle" id="adminMenuToggle" type="button" aria-label="Открыть меню">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1><i class="fas fa-shopping-cart"></i> Заказы</h1>
+        </div>
+      </header>
 
       <div class="admin-table-container">
-        <table class="admin-table">
+        <table class="admin-table admin-table-responsive">
           <thead>
             <tr>
               <th>№</th>
@@ -61,96 +68,13 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </main>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="../js/config.js?v=2"></script>
-  <script>
-    const supabase = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-
-    if (!sessionStorage.getItem('admin_logged_in')) {
-      window.location.href = 'login.html';
-    }
-
-    document.getElementById('logoutBtn').addEventListener('click', (e) => {
-      e.preventDefault();
-      sessionStorage.removeItem('admin_logged_in');
-      window.location.href = 'login.html';
-    });
-
-    const STATUS_LABELS = {
-      new: '🆕 Новый',
-      processing: '⚙️ В обработке',
-      done: '✅ Доставлен',
-      cancelled: '❌ Отменён'
-    };
-
-    async function loadOrders() {
-      const tbody = document.getElementById('ordersBody');
-      try {
-        const { data, error } = await supabase
-          .from('orders')
-          .select('*')
-          .order('created_at', { ascending: false });
-        if (error) throw error;
-
-        const orders = data || [];
-        if (!orders.length) {
-          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Нет заказов</td></tr>';
-          return;
-        }
-
-        tbody.innerHTML = orders.map(o => `
-          <tr>
-            <td><strong>#${o.id}</strong></td>
-            <td>${o.customer || '—'}</td>
-            <td>${o.phone || '—'}</td>
-            <td>${o.total || 0} сом</td>
-            <td>${o.created_at ? new Date(o.created_at).toLocaleString() : '—'}</td>
-            <td>
-              <select class="order-status-select" onchange="updateStatus(${o.id}, this.value)">
-                <option value="new" ${o.status === 'new' ? 'selected' : ''}>${STATUS_LABELS.new}</option>
-                <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>${STATUS_LABELS.processing}</option>
-                <option value="done" ${o.status === 'done' ? 'selected' : ''}>${STATUS_LABELS.done}</option>
-                <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>${STATUS_LABELS.cancelled}</option>
-              </select>
-            </td>
-            <td class="admin-actions">
-              <button class="admin-btn admin-btn-delete" onclick="deleteOrder(${o.id})">🗑️</button>
-            </td>
-          </tr>
-        `).join('');
-      } catch (err) {
-        console.error(err);
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--admin-danger);font-weight:700;">❌ Ошибка загрузки заказов из Supabase</td></tr>';
-      }
-    }
-
-    async function updateStatus(id, status) {
-      try {
-        const { error } = await supabase.from('orders').update({ status }).eq('id', id);
-        if (error) throw error;
-      } catch (err) {
-        console.error(err);
-        alert('Ошибка обновления статуса');
-      }
-    }
-
-    async function deleteOrder(id) {
-      if (!confirm('Удалить заказ?')) return;
-      try {
-        const { error } = await supabase.from('orders').delete().eq('id', id);
-        if (error) throw error;
-        await loadOrders();
-      } catch (err) {
-        console.error(err);
-        alert('Ошибка удаления');
-      }
-    }
-
-    loadOrders();
-  </script>
+  <script src="../js/config.js?v=3"></script>
+  <script src="../js/supabase-client.js?v=3"></script>
+  <script src="admin-common.js?v=3"></script>
+  <script src="orders.js?v=3"></script>
 </body>
 </html>
-

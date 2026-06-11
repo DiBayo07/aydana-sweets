@@ -53,15 +53,23 @@ create policy "products_delete" on public.products for delete using (true);
 
 drop policy if exists "orders_select" on public.orders;
 drop policy if exists "orders_insert" on public.orders;
+drop policy if exists "orders_update" on public.orders;
+drop policy if exists "orders_delete" on public.orders;
 
 create policy "orders_select" on public.orders for select using (true);
 create policy "orders_insert" on public.orders for insert with check (true);
+create policy "orders_update" on public.orders for update using (true);
+create policy "orders_delete" on public.orders for delete using (true);
 
 drop policy if exists "messages_select" on public.messages;
 drop policy if exists "messages_insert" on public.messages;
+drop policy if exists "messages_update" on public.messages;
+drop policy if exists "messages_delete" on public.messages;
 
 create policy "messages_select" on public.messages for select using (true);
 create policy "messages_insert" on public.messages for insert with check (true);
+create policy "messages_update" on public.messages for update using (true);
+create policy "messages_delete" on public.messages for delete using (true);
 
 insert into public.products (name, brand, brand_name, type, cacao, flavor, category, price, description, image, tags, country)
 select * from (values

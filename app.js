@@ -372,6 +372,7 @@ function showProductModal(id) {
 
 // ==================== НАВИГАЦИЯ ====================
 function showPage(pageId) {
+    closeMobileMenu();
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     const page = document.getElementById(`page-${pageId}`);
     if (page) page.classList.add('active');
@@ -389,7 +390,16 @@ function showPage(pageId) {
 
 function toggleMobileMenu() {
     const nav = document.getElementById('nav');
+    const burger = document.getElementById('burger');
     if (nav) nav.classList.toggle('open');
+    if (burger) burger.classList.toggle('open');
+}
+
+function closeMobileMenu() {
+    const nav = document.getElementById('nav');
+    const burger = document.getElementById('burger');
+    if (nav) nav.classList.remove('open');
+    if (burger) burger.classList.remove('open');
 }
 
 function toggleSearch() {
@@ -672,6 +682,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.addEventListener('click', (e) => {
         if (e.target === document.getElementById('modal-overlay')) {
             closeAllModals();
+        }
+
+        const nav = document.getElementById('nav');
+        const burger = document.getElementById('burger');
+        if (nav?.classList.contains('open') && !nav.contains(e.target) && !burger?.contains(e.target)) {
+            closeMobileMenu();
         }
     });
 });
