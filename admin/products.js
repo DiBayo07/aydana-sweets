@@ -65,6 +65,18 @@ function showAddProductModal() {
   document.getElementById('modalTitle').textContent = 'Добавить товар';
   document.getElementById('productForm').reset();
   document.getElementById('editId').value = '';
+  
+  // Reset preview and file input
+  const preview = document.getElementById('productImagePreview');
+  if (preview) {
+    preview.src = '';
+    preview.style.display = 'none';
+  }
+  const fileInput = document.getElementById('productImageFile');
+  if (fileInput) fileInput.value = '';
+  const statusEl = document.getElementById('uploadStatus');
+  if (statusEl) statusEl.textContent = '';
+
   document.getElementById('productModal').classList.add('active');
 }
 
@@ -87,6 +99,24 @@ function editProduct(id) {
   document.getElementById('productImage').value = p.image || '';
   document.getElementById('productHit').checked = (p.tags || []).includes('хит');
   document.getElementById('editId').value = p.id;
+
+  // Reset file input & setup preview
+  const fileInput = document.getElementById('productImageFile');
+  if (fileInput) fileInput.value = '';
+  const statusEl = document.getElementById('uploadStatus');
+  if (statusEl) statusEl.textContent = '';
+
+  const preview = document.getElementById('productImagePreview');
+  if (preview) {
+    if (p.image) {
+      preview.src = p.image;
+      preview.style.display = 'block';
+    } else {
+      preview.src = '';
+      preview.style.display = 'none';
+    }
+  }
+
   document.getElementById('productModal').classList.add('active');
 }
 
@@ -96,6 +126,27 @@ async function submitProductForm() {
     alert('Введите название');
     return;
   }
+
+  const fileInput = document.getElementById('productImageFile');
+  const statusEl = document.getElementById('uploadStatus');
+  let imageUrl = document.getElementById('productImage').value.trim();
+
+  // If a file is selected from device, upload it first
+  if (fileInput && fileInput.files && fileInput.files[0]) {
+    const file = fileInput.files[0];
+    if (statusEl) statusEl.innerHTML = '⏳ Загрузка изображения с устройства...';
+    try {
+      imageUrl = await window.uploadProductImage(file);
+      if (statusEl) statusEl.innerHTML = '✅ Загружено успешно!';
+      document.getElementById('productImage').value = imageUrl;
+    } catch (uploadErr) {
+      console.error(uploadErr);
+      if (statusEl) statusEl.innerHTML = `❌ Ошибка загрузки: ${uploadErr.message}`;
+      alert(`Не удалось загрузить изображение: ${uploadErr.message}`);
+      return; // Stop saving
+    }
+  }
+
   const payload = {
     id: document.getElementById('editId').value
       ? parseInt(document.getElementById('editId').value, 10)
@@ -108,9 +159,7 @@ async function submitProductForm() {
     price: parseInt(document.getElementById('productPrice').value, 10) || 0,
     flavor: document.getElementById('productFlavor').value.trim() || 'classic',
     description: document.getElementById('productDesc').value.trim(),
-    image:
-      document.getElementById('productImage').value.trim() ||
-      'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=200',
+    image: imageUrl || 'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=200',
     tags: document.getElementById('productHit').checked ? ['хит'] : [],
     category: 'bar'
   };
@@ -136,6 +185,35 @@ async function deleteProduct(id) {
     alert('Ошибка удаления');
   }
 }
+
+// Event Listeners for Dynamic Previews
+document.getElementById('productImageFile')?.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const preview = document.getElementById('productImagePreview');
+      if (preview) {
+        preview.src = event.target.result;
+        preview.style.display = 'block';
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+document.getElementById('productImage')?.addEventListener('input', (e) => {
+  const url = e.target.value.trim();
+  const preview = document.getElementById('productImagePreview');
+  if (preview) {
+    if (url) {
+      preview.src = url;
+      preview.style.display = 'block';
+    } else {
+      preview.style.display = 'none';
+    }
+  }
+});
 
 document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
   e.preventDefault();

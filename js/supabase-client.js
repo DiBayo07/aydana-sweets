@@ -173,3 +173,38 @@ window.fetchMessages = async function fetchMessages() {
     console.log('✅ Загружено сообщений:', data?.length || 0);
     return data || [];
 };
+
+window.uploadProductImage = async function uploadProductImage(file) {
+    console.log('📤 uploadProductImage вызвана для файла:', file.name);
+    const supabase = getSupabase();
+    
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
+    const filePath = `product-images/${fileName}`;
+
+    const { data, error } = await supabase.storage
+        .from('products')
+        .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false
+        });
+
+    if (error) {
+        console.error('❌ Ошибка Supabase Storage при загрузке:', error);
+        if (error.message && (error.message.includes('bucket') || error.message.includes('does not exist'))) {
+            throw new Error('Бакет "products" не найден. Пожалуйста, создайте публичный бакет "products" в панели управления Supabase Storage (вкладка Storage) и настройте RLS-политики на чтение и вставку для anon-пользователей.');
+        }
+        throw new Error(error.message || 'Ошибка загрузки файла в Supabase Storage');
+    }
+
+    const { data: publicUrlData } = supabase.storage
+        .from('products')
+        .getPublicUrl(filePath);
+
+    if (!publicUrlData || !publicUrlData.publicUrl) {
+        throw new Error('Не удалось получить публичную ссылку на загруженный файл');
+    }
+
+    console.log('✅ Изображение загружено, публичный URL:', publicUrlData.publicUrl);
+    return publicUrlData.publicUrl;
+};

@@ -112,8 +112,16 @@
             <label>Описание</label>
             <textarea id="productDesc" class="admin-form-control" rows="3"></textarea>
           </div>
+          <div class="admin-form-group" style="text-align: center;">
+            <img id="productImagePreview" src="" style="max-width: 150px; max-height: 150px; border-radius: 12px; object-fit: cover; border: 2px solid var(--admin-border); display: none; margin: 10px auto;">
+          </div>
           <div class="admin-form-group">
-            <label>URL изображения</label>
+            <label>Загрузить изображение с устройства</label>
+            <input type="file" id="productImageFile" class="admin-form-control" accept="image/*">
+            <div id="uploadStatus" style="font-size: 0.85rem; margin-top: 5px; color: var(--admin-text-light);"></div>
+          </div>
+          <div class="admin-form-group">
+            <label>Или указать URL изображения</label>
             <input type="url" id="productImage" class="admin-form-control" placeholder="https://...">
           </div>
           <div class="admin-form-group">
