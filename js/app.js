@@ -24,7 +24,7 @@ async function loadProducts() {
         return products;
       }
     } catch (_e) {
-      // ignore
+     
     }
     products = [];
     showToast(`Supabase: ${error.message}`, 'error');
@@ -59,7 +59,6 @@ async function loadAllData() {
   }
 }
 
-// ==================== КАТАЛОГ ====================
 let currentFilters = { types: [], categories: [], flavors: [], brands: [], maxPrice: 5000 };
 let currentSort = 'default';
 
@@ -74,7 +73,7 @@ function renderCatalog() {
     
     console.log('Рендер каталога, товаров:', products.length);
     
-    // Применяем фильтры
+   
     let filtered = [...products];
     
     if (currentFilters.types.length) {
@@ -128,7 +127,7 @@ function renderCatalog() {
     console.log('Отрисовано товаров:', filtered.length);
 }
 
-// ==================== ХИТЫ ПРОДАЖ ====================
+
 function renderFeaturedProducts() {
     const container = document.getElementById('featured-products');
     if (!container) return;
@@ -137,7 +136,7 @@ function renderFeaturedProducts() {
     console.log('Хиты продаж:', featured.length);
     
     if (featured.length === 0) {
-        // Если нет хитов, показываем первые 4 товара
+      
         const firstFour = products.slice(0, 4);
         if (firstFour.length) {
             container.innerHTML = firstFour.map(p => `
@@ -176,12 +175,26 @@ function renderFeaturedProducts() {
     `).join('');
 }
 
-// ==================== ФИЛЬТРЫ ====================
 function renderBrandFilters() {
     const container = document.getElementById('brand-filter-list');
     if (!container) return;
     
-    container.innerHTML = brands.map(b => `
+    // Ручной список брендов
+    const manualBrands = [
+        { id: 'milka', name: 'Milka' },
+        { id: 'alpen_gold', name: 'Alpen Gold' },
+        { id: 'roshen', name: 'Roshen' },
+        { id: 'ritter_sport', name: 'Ritter Sport' },
+        { id: 'alenka', name: 'Аленка' },
+        { id: 'yahya', name: 'Yahya' },
+        { id: 'toblerone', name: 'Toblerone' },
+        { id: 'nestle', name: 'Nestle' },
+        { id: 'oreo', name: 'Oreo' },
+        { id: 'babaevsky', name: 'Бабаевский' },
+        { id: 'rotfront', name: 'РотФронт' }
+    ];
+    
+    container.innerHTML = manualBrands.map(b => `
         <label class="brand-filter-item">
             <input type="checkbox" name="brand" value="${b.id}" onchange="applyFilters()">
             <span>${b.name}</span>
@@ -227,7 +240,6 @@ function toggleFilters() {
     if (sidebar) sidebar.classList.toggle('open');
 }
 
-// ==================== КОРЗИНА ====================
 function updateCartCount() {
     const count = cart.reduce((sum, item) => sum + item.quantity, 0);
     const countEl = document.getElementById('cart-count');
@@ -311,7 +323,7 @@ function renderCartModal() {
     if (totalSpan) totalSpan.textContent = `${total} сом`;
 }
 
-// ==================== МОДАЛЬНЫЕ ОКНА ====================
+
 function showModal(modalId) {
     const modal = document.getElementById(modalId);
     const overlay = document.getElementById('modal-overlay');
@@ -370,9 +382,7 @@ function showProductModal(id) {
     showModal('product-modal');
 }
 
-// ==================== НАВИГАЦИЯ ====================
 function showPage(pageId) {
-    closeMobileMenu();
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     const page = document.getElementById(`page-${pageId}`);
     if (page) page.classList.add('active');
@@ -390,16 +400,7 @@ function showPage(pageId) {
 
 function toggleMobileMenu() {
     const nav = document.getElementById('nav');
-    const burger = document.getElementById('burger');
     if (nav) nav.classList.toggle('open');
-    if (burger) burger.classList.toggle('open');
-}
-
-function closeMobileMenu() {
-    const nav = document.getElementById('nav');
-    const burger = document.getElementById('burger');
-    if (nav) nav.classList.remove('open');
-    if (burger) burger.classList.remove('open');
 }
 
 function toggleSearch() {
@@ -438,40 +439,73 @@ function handleSearch(query) {
     `).join('');
 }
 
-// ==================== ИСТОРИЯ ====================
+
 function renderHistoryTimeline() {
     const container = document.getElementById('history-timeline');
     if (!container) return;
-    
+
     container.innerHTML = `
         <div class="timeline-wrapper">
             <div class="timeline-item">
                 <div class="timeline-year">1500 г. до н.э.</div>
-                <div class="timeline-icon">🌱</div>
-                <div class="timeline-content"><h3>Древние ольмеки</h3><p>Первыми начали использовать какао-бобы</p></div>
+                <div class="timeline-icon"></div>
+                <div class="timeline-content">
+                    <h3>Древние ольмеки</h3>
+                    <p>Первыми начали использовать какао-бобы</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="hbhbh.png" alt="Ольмеки какао" loading="lazy">
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-year">XVI век</div>
-                <div class="timeline-icon">⛵</div>
-                <div class="timeline-content"><h3>Испанское завоевание</h3><p>Шоколад попадает в Европу</p></div>
+                <div class="timeline-icon"></div>
+                <div class="timeline-content">
+                    <h3>Испанское завоевание</h3>
+                    <p>Шоколад попадает в Европу</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="dfcdf.png" alt="Испанцы шоколад" loading="lazy">
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-year">1828 год</div>
-                <div class="timeline-icon">⚙️</div>
-                <div class="timeline-content"><h3>Изобретение какао-масла</h3><p>Ван Хаутен создаёт пресс</p></div>
+                <div class="timeline-icon"></div>
+                <div class="timeline-content">
+                    <h3>Изобретение какао-масла</h3>
+                    <p>Ван Хаутен создаёт пресс</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="bhhbh.png" alt="Какао пресс" loading="lazy">
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-year">1875 год</div>
-                <div class="timeline-icon">🥛</div>
-                <div class="timeline-content"><h3>Молочный шоколад</h3><p>Даниэль Петер добавляет сухое молоко</p></div>
+                <div class="timeline-icon"></div>
+                <div class="timeline-content">
+                    <h3>Молочный шоколад</h3>
+                    <p>Даниэль Петер добавляет сухое молоко</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="wsdxs.png" alt="Молочный шоколад" loading="lazy">
+                </div>
             </div>
         </div>
         <div class="history-funfacts">
-            <h3>🍫 Интересные факты 🍫</h3>
+            <h3> Интересные факты </h3>
             <div class="funfacts-grid">
-                <div class="funfact-card">Шоколад улучшает настроение</div>
-                <div class="funfact-card">Тёмный шоколад полезен для сердца</div>
-                <div class="funfact-card">Какао-бобы использовались как валюта</div>
+                <div class="funfact-card">
+                    <span class="funfact-emoji"></span>
+                    Шоколад улучшает настроение
+                </div>
+                <div class="funfact-card">
+                    <span class="funfact-emoji"></span>
+                    Тёмный шоколад полезен для сердца
+                </div>
+                <div class="funfact-card">
+                    <span class="funfact-emoji"></span>
+                    Какао-бобы использовались как валюта
+                </div>
             </div>
         </div>
     `;
@@ -482,56 +516,112 @@ function renderFullHistory() {
     if (!container) return;
     container.innerHTML = `
       <div class="history-full-container">
-        <h2>История шоколада</h2>
-        <p style="color: var(--text-mid); line-height: 1.8; margin-top: 10px;">
-          Шоколад — это не просто сладость. Это путешествие длиной в тысячелетия: от священного напитка майя
-          до современных ремесленных плиток с редкими какао-бобами.
-        </p>
-
-        <div style="margin-top: 24px; display: grid; gap: 14px;">
-          <div style="background: var(--ivory); border-radius: 16px; padding: 18px 18px; box-shadow: var(--shadow-sm);">
-            <h3 style="margin-bottom: 8px;">🌿 Древняя Мезоамерика</h3>
-            <p style="color: var(--text-mid); line-height: 1.75;">
-              Ольмеки, майя и ацтеки первыми приручили какао. Какао-бобы ценились как валюта,
-              а напиток из какао с пряностями считался ритуальным и “божественным”.
-            </p>
-          </div>
-          <div style="background: var(--ivory); border-radius: 16px; padding: 18px 18px; box-shadow: var(--shadow-sm);">
-            <h3 style="margin-bottom: 8px;">⛵ Европа и “шоколадная мода”</h3>
-            <p style="color: var(--text-mid); line-height: 1.75;">
-              В XVI веке какао попадает в Европу. Сахар и ваниль превращают горький напиток
-              в любимый десерт аристократии. Шоколадные дома становятся трендом.
-            </p>
-          </div>
-          <div style="background: var(--ivory); border-radius: 16px; padding: 18px 18px; box-shadow: var(--shadow-sm);">
-            <h3 style="margin-bottom: 8px;">⚙️ Революция технологий</h3>
-            <p style="color: var(--text-mid); line-height: 1.75;">
-              В 1828 году пресс Ван Хаутена сделал шоколад массовым: появился какао-порошок и какао-масло.
-              Затем — конширование, улучшившее текстуру и аромат.
-            </p>
-          </div>
-          <div style="background: var(--ivory); border-radius: 16px; padding: 18px 18px; box-shadow: var(--shadow-sm);">
-            <h3 style="margin-bottom: 8px;">🥛 Молочный шоколад и новые вкусы</h3>
-            <p style="color: var(--text-mid); line-height: 1.75;">
-              В 1875 году молочный шоколад меняет рынок: сладкий, мягкий, нежный.
-              Сегодня шоколад — это целая гастрономия: орехи, ягоды, специи, карамель, мята и даже рубиновый шоколад.
-            </p>
+        <div class="history-hero">
+          <div class="history-hero-content">
+            <h1> История шоколада</h1>
+            <p>Путешествие длиной в 4000 лет: от священного напитка древних цивилизаций до изысканного десерта наших дней</p>
           </div>
         </div>
 
-        <div style="margin-top: 26px; padding: 18px; border-radius: 18px; background: linear-gradient(135deg, var(--cream), var(--beige)); box-shadow: var(--shadow-sm);">
-          <h3 style="margin-bottom: 10px;">🍫 Как выбирать шоколад</h3>
-          <ul style="margin-left: 18px; line-height: 1.9; color: var(--text-mid);">
-            <li>Смотрите на \(\\%\\) какао: чем выше — тем ярче вкус.</li>
-            <li>Для подарка — выбирайте ассорти и необычные начинки.</li>
-            <li>Темный шоколад лучше раскрывается с кофе и ягодами, молочный — с орехами и карамелью.</li>
-          </ul>
+        <div class="history-era-item">
+          <div class="history-era-info">
+            <div class="history-era-year"> 1500 г. до н.э. — 400 г. н.э.</div>
+            <h3> Древняя Мезоамерика</h3>
+            <p>Ольмеки, майя и ацтеки первыми «приручили» какао-деревья. Какао-бобы использовались как <strong>валюта</strong> — за 100 бобов можно было купить раба! Напиток «чоколатль» готовили из молотых какао-бобов, воды, перца чили и ванили. Его пили <strong>холодным и горьким</strong>, считая божественным эликсиром.</p>
+            <div class="history-fact"> Интересный факт: Монтесума, правитель ацтеков, выпивал до 50 чашек чоколатля в день для повышения выносливости и настроения.</div>
+          </div>
+          <div class="history-era-image">
+            <img src="uuuih.png" alt="Древние цивилизации какао" onerror="this.src='https://cdn.pixabay.com/photo/2020/06/26/23/41/cocoa-5345420_640.jpg'">
+          </div>
         </div>
-      </div>
+
+        <div class="history-era-item reverse">
+          <div class="history-era-info">
+            <div class="history-era-year">1528 год</div>
+            <h3>Испанское завоевание</h3>
+            <p>Кортес привёз какао-бобы в Испанию. Монахи добавили <strong>сахар, мёд и ваниль</strong> — напиток стал сладким и горячим! Более 100 лет рецепт держался в <strong>секрете</strong> при испанском дворе. Шоколад считался афродизиаком и лекарством от всех болезней.</p>
+            <div class="history-fact"> Интересный факт: Папа Римский Пий V пробовал шоколад и объявил, что он не нарушает пост — его можно пить даже в Великий пост!</div>
+          </div>
+          <div class="history-era-image">
+            <img src="mjknjh.png" alt="Испанский шоколад" onerror="this.src='https://cdn.pixabay.com/photo/2017/01/15/22/57/hot-chocolate-1982776_640.jpg'">
+          </div>
+        </div>
+
+        <div class="history-era-item">
+          <div class="history-era-info">
+            <div class="history-era-year"> 1828 год</div>
+            <h3>Технологическая революция</h3>
+            <p>Голландский химик <strong>Конрад ван Хаутен</strong> изобрёл гидравлический пресс, который отделял какао-масло от какао-бобов. Так появился <strong>какао-порошок</strong> и твёрдый шоколад! А в 1879 году <strong>Рудольф Линдт</strong> (основатель Lindt) изобрёл конширование — процесс непрерывного перемешивания, который сделал шоколад невероятно нежным и тающим во рту.</p>
+            <div class="history-fact"> Интересный факт: Первая шоколадная плитка была выпущена в Англии в 1847 году компанией Fry & Sons.</div>
+          </div>
+          <div class="history-era-image">
+            <img src="resdx.png" alt="Производство шоколада" onerror="this.src='https://cdn.pixabay.com/photo/2016/11/15/15/32/cocoa-1826644_640.jpg'">
+          </div>
+        </div>
+
+        <div class="history-era-item reverse">
+          <div class="history-era-info">
+            <div class="history-era-year"> 1875 год — наши дни</div>
+            <h3>Молочный шоколад и современность</h3>
+            <p>Швейцарец <strong>Даниэль Петер</strong> (зять создателя Nestlé) добавил в тёмный шоколад сгущённое молоко — родился <strong>молочный шоколад</strong>! Сегодня существует <strong>более 1000 видов шоколада</strong>: белый, рубиновый, с морской солью, перцем, мятой, лавандой, беконом и даже с сыром!</p>
+            <div class="history-fact"> Интересный факт: Рубиновый шоколад розового цвета был изобретён в 2017 году компанией Barry Callebaut — это первый новый цвет шоколада за 80 лет!</div>
+          </div>
+          <div class="history-era-image">
+            <img src="tftrfgd.png" alt="Современный шоколад" onerror="this.src='https://cdn.pixabay.com/photo/2019/10/12/11/55/chocolate-4544343_640.jpg'">
+          </div>
+        </div>
+
+        <div class="history-stats-grid">
+          <div class="history-stat-card">
+            <div class="stat-number">40 млн</div>
+            <div class="stat-desc">человек ежедневно едят шоколад</div>
+          </div>
+          <div class="history-stat-card">
+            <div class="stat-number">$100 млрд</div>
+            <div class="stat-desc">мировой рынок шоколада в год</div>
+          </div>
+          <div class="history-stat-card">
+            <div class="stat-number">30 000</div>
+            <div class="stat-desc">сортов какао-бобов в мире</div>
+          </div>
+          <div class="history-stat-card">
+            <div class="stat-number">4000 лет</div>
+            <div class="stat-desc">истории шоколада</div>
+          </div>
+        </div>
+
+        <div class="history-funfacts">
+          <h3> Удивительные факты о шоколаде</h3>
+          <div class="funfacts-grid">
+            <div class="funfact-card">
+              <div class="funfact-emoji"></div>
+              <p>Шоколад содержит фенилэтиламин — "вещество любви", которое вырабатывается в мозге, когда мы влюблены</p>
+            </div>
+            <div class="funfact-card">
+              <div class="funfact-emoji"></div>
+              <p>Тёмный шоколад снижает давление и улучшает работу сердца благодаря флавоноидам</p>
+            </div>
+            <div class="funfact-card">
+              <div class="funfact-emoji"></div>
+              <p>У ацтеков 100 какао-бобов стоили 1 раба — шоколад был дороже золота!</p>
+            </div>
+            <div class="funfact-card">
+              <div class="funfact-emoji"></div>
+              <p>Швейцария — страна, потребляющая больше всего шоколада на душу населения: 9 кг в год</p>
+            </div>
+            <div class="funfact-card">
+              <div class="funfact-emoji"></div>
+              <p>Самая большая шоколадная плитка весила 5,8 тонн — как средний слон!</p>
+            </div>
+            
+          </div>
+        </div>
+
+        
     `;
 }
 
-// ==================== АДМИН (упрощённо) ====================
+
 function doAdminLogin() {
     const user = document.getElementById('admin-login-username')?.value;
     const pass = document.getElementById('admin-login-pass')?.value;
@@ -605,7 +695,6 @@ async function sendContactMessage() {
     }
 }
 
-// ==================== ЗАКАЗЫ ====================
 async function placeOrder() {
     const name = document.getElementById('order-name')?.value;
     const phone = document.getElementById('order-phone')?.value;
@@ -644,7 +733,7 @@ async function placeOrder() {
     }
 }
 
-// ==================== ВСПОМОГАТЕЛЬНЫЕ ====================
+
 function filterByBrand(brandId) {
     showPage('catalog');
     setTimeout(() => {
@@ -673,7 +762,7 @@ function createParticles() {
     }
 }
 
-// ==================== ИНИЦИАЛИЗАЦИЯ ====================
+
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOM загружен, инициализация...');
     await loadAllData();
@@ -683,11 +772,75 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.target === document.getElementById('modal-overlay')) {
             closeAllModals();
         }
+    });
+});
 
+
+
+
+function toggleMobileMenu() {
+    const nav = document.getElementById('nav');
+    const burger = document.getElementById('burger');
+    
+    if (nav) {
+        nav.classList.toggle('open');
+        burger?.classList.toggle('active');
+        
+     
+        if (nav.classList.contains('open')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+}
+
+function closeMobileMenu() {
+    const nav = document.getElementById('nav');
+    const burger = document.getElementById('burger');
+    
+    if (nav && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        burger?.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+function initMobileMenu() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMobileMenu();
+        });
+    });
+    
+   
+    document.addEventListener('click', (e) => {
         const nav = document.getElementById('nav');
         const burger = document.getElementById('burger');
-        if (nav?.classList.contains('open') && !nav.contains(e.target) && !burger?.contains(e.target)) {
+        
+        if (!nav || !burger) return;
+    
+        if (nav.classList.contains('open') && 
+            !burger.contains(e.target) && 
+            !nav.contains(e.target)) {
             closeMobileMenu();
         }
     });
+    
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            closeMobileMenu();
+        }
+    });
+    
+
+    window.addEventListener('scroll', () => {
+        closeMobileMenu();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initMobileMenu();
 });

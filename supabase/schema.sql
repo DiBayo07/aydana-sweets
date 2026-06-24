@@ -87,3 +87,26 @@ select * from (values
    array[]::text[], 'germany')
 ) as v(name, brand, brand_name, type, cacao, flavor, category, price, description, image, tags, country)
 where not exists (select 1 from public.products limit 1);
+
+-- ==================== ПОЛИТИКИ ХРАНИЛИЩА (STORAGE POLICIES) ====================
+-- Разрешаем публичный доступ (включая анонимных пользователей) к бакету 'products'
+
+-- 1. Разрешить всем чтение файлов
+create policy "Allow public select on products bucket"
+on storage.objects for select
+using ( bucket_id = 'products' );
+
+-- 2. Разрешить вставку (загрузку) файлов
+create policy "Allow public insert on products bucket"
+on storage.objects for insert
+with check ( bucket_id = 'products' );
+
+-- 3. Разрешить обновление файлов
+create policy "Allow public update on products bucket"
+on storage.objects for update
+using ( bucket_id = 'products' );
+
+-- 4. Разрешить удаление файлов
+create policy "Allow public delete on products bucket"
+on storage.objects for delete
+using ( bucket_id = 'products' );

@@ -6,7 +6,7 @@
   <title>Айдана Sweets — Шоколадный мир</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -82,9 +82,7 @@
     <section class="stats-bar">
       <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Брендов</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-num">300+</span><span class="stat-label">Продуктов</span></div>
-      <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-num">15</span><span class="stat-label">Стран</span></div>
+      <div class="stat"><span class="stat-num">150+</span><span class="stat-label">Продуктов</span></div>
       <div class="stat-divider"></div>
       <div class="stat"><span class="stat-num">24ч</span><span class="stat-label">Доставка</span></div>
     </section>
@@ -99,11 +97,11 @@
           <div class="banner banner-big">
             <div class="banner-content">
               <span class="banner-tag">Новинка</span>
-              <h3>Бельгийский<br>шоколад Leonidas</h3>
+              <h3>Кыргызскии<br>шоколад Yahya</h3>
               <p>Ручная работа, натуральные ингредиенты</p>
-              <button class="btn-primary" onclick="showCountryBrands('belgium')">Смотреть бренд</button>
+              <button class="btn-primary" onclick="showCountryBrands('yahya')">Смотреть бренд</button>
             </div>
-            <div class="banner-deco">🍫</div>
+            <div class="banner-deco"></div>
           </div>
           <div class="banner banner-sm banner-caramel">
             <span class="banner-tag">Акция</span>
@@ -112,8 +110,8 @@
           </div>
           <div class="banner banner-sm banner-green">
             <span class="banner-tag">Эксклюзив</span>
-            <h3>Швейцарский<br>Lindt</h3>
-            <button class="btn-outline-light" onclick="filterByBrand('lindt')">Смотреть</button>
+            <h3>Alpen Gold<br></h3>
+            <button class="btn-outline-light" onclick="filterByBrand('alpen_gold')">Смотреть</button>
           </div>
         </div>
       </div>
@@ -134,7 +132,7 @@
    <section class="section section-cream">
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">История шоколада 🍫</h2>
+      <h2 class="section-title">История шоколада </h2>
       <p class="section-sub">Путешествие сквозь века</p>
     </div>
     <div class="history-timeline" id="history-timeline"></div>
@@ -188,7 +186,7 @@
     <div class="page-hero">
       <div class="container">
         <h1 class="page-title">Каталог</h1>
-        <p class="page-sub">Более 300 шоколадных удовольствий</p>
+        <p class="page-sub">Более 200 шоколадных удовольствий</p>
       </div>
     </div>
     <div class="container">
@@ -205,26 +203,15 @@
             <label><input type="checkbox" name="type" value="dark" onchange="applyFilters()"> Тёмный</label>
             <label><input type="checkbox" name="type" value="milk" onchange="applyFilters()"> Молочный</label>
             <label><input type="checkbox" name="type" value="white" onchange="applyFilters()"> Белый</label>
-            <label><input type="checkbox" name="type" value="ruby" onchange="applyFilters()"> Рубиновый</label>
+           
           </div>
 
           <div class="filter-group">
             <h4>Категория</h4>
             <label><input type="checkbox" name="cat" value="bar" onchange="applyFilters()"> Плитки</label>
-            <label><input type="checkbox" name="cat" value="bar2" onchange="applyFilters()"> Батончики</label>
-            <label><input type="checkbox" name="cat" value="sets" onchange="applyFilters()"> Паста</label>
-            <label><input type="checkbox" name="cat" value="candy" onchange="applyFilters()"> Конфеты</label>
           </div>
 
-          <div class="filter-group">
-            <h4>Вкус</h4>
-            <label><input type="checkbox" name="flavor" value="hazelnut" onchange="applyFilters()"> Фундук</label>
-            <label><input type="checkbox" name="flavor" value="caramel" onchange="applyFilters()"> Карамель</label>
-            <label><input type="checkbox" name="flavor" value="mint" onchange="applyFilters()"> Мята</label>
-            <label><input type="checkbox" name="flavor" value="berry" onchange="applyFilters()"> Ягоды</label>
-            <label><input type="checkbox" name="flavor" value="orange" onchange="applyFilters()"> Апельсин</label>
-            <label><input type="checkbox" name="flavor" value="classic" onchange="applyFilters()"> Классический</label>
-          </div>
+          
 
           <div class="filter-group">
             <h4>Бренд</h4>
@@ -345,18 +332,13 @@
       <div>
         <h5>Магазин</h5>
         <a onclick="showPage('catalog')">Каталог</a>
-        <a onclick="showPage('countries')">По странам</a>
+        <a onclick="showPage('history')">История</a>
         <a onclick="showPage('contacts')">Контакты</a>
       </div>
-      <div>
-        <h5>Покупателям</h5>
-        <a href="#">Доставка и оплата</a>
-        <a href="#">Возврат</a>
-        <a href="#">FAQ</a>
-      </div>
+  
       <div>
         <h5>Связь</h5>
-        <p>+996906990</p>
+        <p>+996226906990</p>
         <p>hello@aydana-sweets.kg</p>
         <div class="footer-socials">
           <a href="#">Inst</a>
@@ -389,13 +371,13 @@
       </div>
       <button class="btn-primary btn-full" onclick="doAdminLogin()">Войти</button>
       <div style="margin-top: 15px; font-size: 0.85rem; text-align: center; color: var(--text-light);">
-       
+        
       </div>
     </div>
 
     <div id="auth-profile" class="auth-form hidden">
       <div class="profile-header">
-        <div class="profile-avatar">🛡️</div>
+        <div class="profile-avatar"></div>
         <div>
           <div class="profile-name">Администратор</div>
           <div class="profile-email">admin@aydana-sweets.kg</div>
@@ -404,7 +386,7 @@
       <div style="margin: 20px 0; text-align: center;">
         <p style="font-size: 0.9rem; color: var(--text-mid);">Вы авторизованы как администратор.</p>
       </div>
-      <button class="btn-primary btn-full" onclick="goToAdminDashboard(); closeModal('auth-modal');" style="margin-bottom: 10px;">Панель управления</button>
+      <button class="btn-primary btn-full" onclick="showPage('admin'); closeModal('auth-modal');" style="margin-bottom: 10px;">Панель управления</button>
       <button class="btn-outline btn-full" onclick="doAdminLogout()">Выйти</button>
     </div>
   </div>
@@ -414,7 +396,7 @@
 <div id="cart-modal" class="modal">
   <div class="modal-box modal-cart">
     <button class="modal-close" onclick="closeModal('cart-modal')">✕</button>
-    <h3>🛒 Корзина</h3>
+    <h3> Корзина</h3>
     <div id="cart-items"></div>
     <div id="cart-empty" class="cart-empty">
       <div class="cart-empty-icon"></div>
@@ -463,6 +445,8 @@
   </div>
 </div>
 
+<link rel="icon" href="data:,">
+
 
 <div id="product-modal" class="modal">
   <div class="modal-box modal-product">
@@ -471,9 +455,9 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="js/config.js?v=3"></script>
-<script src="js/supabase-client.js?v=3"></script>
-<script src="js/app.js?v=4"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
