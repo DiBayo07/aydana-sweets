@@ -29,9 +29,14 @@ async function loadProducts() {
     }
     tbody.innerHTML = products
       .map(
-        (p) => `
+        (p) => {
+          let img = p.image || '';
+          if (img && !img.startsWith('http') && !img.startsWith('data:') && !img.startsWith('/')) {
+            img = '../' + img;
+          }
+          return `
       <tr>
-        <td><img src="${p.image && p.image.startsWith('img/') ? '../' + p.image : (p.image || '')}" width="45" height="45" style="border-radius:8px;object-fit:cover" alt=""></td>
+        <td><img src="${img}" width="45" height="45" style="border-radius:8px;object-fit:cover" alt=""></td>
         <td><strong>${escapeHtml(p.name)}</strong></td>
         <td>${escapeHtml(p.brandName || p.brand)}</td>
         <td>${TYPE_LABELS[p.type] || p.type}</td>
@@ -41,7 +46,8 @@ async function loadProducts() {
           <button class="admin-btn admin-btn-edit" onclick="editProduct(${p.id})">✏️</button>
           <button class="admin-btn admin-btn-delete" onclick="deleteProduct(${p.id})">🗑️</button>
         </td>
-      </tr>`
+      </tr>`;
+        }
       )
       .join('');
   } catch (err) {
@@ -109,7 +115,9 @@ function editProduct(id) {
   const preview = document.getElementById('productImagePreview');
   if (preview) {
     if (p.image) {
-      preview.src = p.image.startsWith('img/') ? '../' + p.image : p.image;
+      preview.src = (p.image && !p.image.startsWith('http') && !p.image.startsWith('data:') && !p.image.startsWith('/')) 
+        ? '../' + p.image 
+        : p.image;
       preview.style.display = 'block';
     } else {
       preview.src = '';
