@@ -31,7 +31,7 @@ async function loadProducts() {
       .map(
         (p) => `
       <tr>
-        <td><img src="${p.image}" width="45" height="45" style="border-radius:8px;object-fit:cover" alt=""></td>
+        <td><img src="${p.image && p.image.startsWith('img/') ? '../' + p.image : (p.image || '')}" width="45" height="45" style="border-radius:8px;object-fit:cover" alt=""></td>
         <td><strong>${escapeHtml(p.name)}</strong></td>
         <td>${escapeHtml(p.brandName || p.brand)}</td>
         <td>${TYPE_LABELS[p.type] || p.type}</td>
@@ -109,7 +109,7 @@ function editProduct(id) {
   const preview = document.getElementById('productImagePreview');
   if (preview) {
     if (p.image) {
-      preview.src = p.image;
+      preview.src = p.image.startsWith('img/') ? '../' + p.image : p.image;
       preview.style.display = 'block';
     } else {
       preview.src = '';
